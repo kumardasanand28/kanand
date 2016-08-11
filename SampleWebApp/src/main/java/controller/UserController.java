@@ -1,5 +1,8 @@
 package controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -22,6 +25,23 @@ public class UserController {
 	@RequestMapping("/")
 	public String welcome() {
 		return "main";
+	}
+	
+	
+	@RequestMapping(value="/fetchregisteredusers/", method=RequestMethod.GET)
+	public List<User> fetchRegisteredUsers() {
+		try {
+			return userRepository.findAll();
+			/* List<User> listUser = new ArrayList<User>();
+			User u= new User();
+			u.setNickname("Anand");
+			u.setActive(false);
+			listUser.add(u);
+			return listUser;*/
+		} catch (Exception e) {
+			System.out.println("Error: " + e.toString());
+		}
+		return null;
 	}
 	
 	

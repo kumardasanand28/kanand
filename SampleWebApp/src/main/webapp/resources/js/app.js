@@ -4,4 +4,4 @@
 
 'use strict';
 
-var App = angular.module('efialtes', []);
+var App = angular.module('User', []);

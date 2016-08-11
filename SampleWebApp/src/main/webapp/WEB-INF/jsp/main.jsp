@@ -3,16 +3,28 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+
+<script	src="<c:url value='/resources/js/angular.js' />"></script>
+<script src="<c:url value='/resources/js/app.js' />"></script>
+<script src="<c:url value='/resources/js/controller/user-controller.js' />"></script>
+<script src="<c:url value='/resources/js/service/user-service.js' />"></script>
+
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<br/>
 <title>Register</title>
 
 </head>
-<body ng-app="efialtes">
+
+<body ng-app="User">
+
+
 	<div class="container">
 		<div class="row">
 			<div>
-				<div ng-controller="userController as ctrl"
-					class="well bs-component">
+				<div ng-controller="userController as ctrl">
 
 					<form ng-submit="ctrl.submit()" name="register">
 						<div>
@@ -23,7 +35,7 @@
 							</div>
 						</div>
 						<div>
-							<label for="password" class="col-lg-2 control-label">Password</label>
+							<label for="password" >Password</label>
 							<div>
 								<input type="password" ng-model="ctrl.user.password"
 									id="password" required />
@@ -39,17 +51,28 @@
 
 						<div>
 							<div>
-								<input type="submit" value="Register"
-									ng-disabled="register.$invalid">
+								<input type="submit" value="Register">
 
 							</div>
 						</div>
-
 					</form>
+					
 				</div>
 			</div>
 		</div>
 
 	</div>
+	
+
 </body>
+ <script type="text/javascript">
+            function Redirect() {
+            	console.log('called');
+            			document.location.href = '/fetchregisteredusers/';
+            }
+      </script>
+      
+      <form>
+         <input type="button" value="Go to admin Page" onclick="Redirect();" />
+      </form>
 </html>
