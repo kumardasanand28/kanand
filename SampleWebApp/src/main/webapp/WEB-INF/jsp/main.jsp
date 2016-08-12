@@ -67,8 +67,7 @@
 </body>
  <script type="text/javascript">
             function Redirect() {
-            	console.log('called');
-            			document.location.href = '/fetchregisteredusers/';
+            			document.location.href = '/fetchregisteredusers';
             }
       </script>
       
