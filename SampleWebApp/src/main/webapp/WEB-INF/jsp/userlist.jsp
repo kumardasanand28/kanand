@@ -13,31 +13,44 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Admin Page</title>
 </head>
-<body>
+<body ng-app="User">
 
 <h1>LIST OF USERS REGISTERED</h1>
 <table border="1" style="width: 95%; border-collapse: collapse;">
     
   <tr>
     <td class="headercol"><b>EMAIL</b></td>
-    <td class="headercol"><b>VISITS</b></td>
     <td class="headercol"><b>NICKNAME</b></td>
     <td class="headercol"><b>ACTIVE/NOTACTIVE</b></td>
     <td class="headercol"><b>REGISTRATION DATE</b></td>
-  
+    <td class="headercol"><b>CLICK TO REMOVE</b></td>
   </tr>
 <c:forEach items="${userlist}" var="user">     
     <tr>
       <td class="rowcol">${user.email}</td>
-      <td class="rowcol">${user.visits}</td>
       <td class="rowcol">${user.nickname}</td>
       <td class="rowcol">${user.active}</td>
       <td class="rowcol">${user.createdDate}</td>
+      <td ng-controller="userController as ctrl"> 
+      <c:set var="email" value="${user.email}"></c:set>
+      <button ng-click="ctrl.remove($event)" value="${email}">Remove User</button>
+      </td>
     </tr>
 </c:forEach>
   
 </table>
+<br/>
+<br/>
 
+ <script type="text/javascript">
+            function Redirect() {
+            			document.location.href = '/';
+            }
+      </script>
+      
+      <form>
+         <input type="button" value="Go back to Registration Page Page" onclick="Redirect();" />
+      </form>
 
 </body>
 </html>

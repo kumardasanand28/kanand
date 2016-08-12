@@ -17,7 +17,6 @@
 <title>Register</title>
 
 </head>
-
 <body ng-app="User">
 
 
@@ -30,25 +29,21 @@
 						<div>
 							<label for="email">Email</label>
 							<div>
-								<input type="email" ng-model="ctrl.user.email" id="email"
-									placeholder="abcd@gmail.com" required />
+								<input type="email" ng-model="ctrl.user.email" id="email"  required />
 							</div>
 						</div>
 						<div>
 							<label for="password" >Password</label>
 							<div>
-								<input type="password" ng-model="ctrl.user.password"
-									id="password" required />
+								<input type="password" ng-model="ctrl.user.password" id="password" required />
 							</div>
 						</div>
 						<div>
 							<label for="nickname">Nick Name</label>
 							<div>
-								<input type="text" ng-model="ctrl.user.nickname" id="nickname"
-									placeholder="Nick Name" required />
+								<input type="text" ng-model="ctrl.user.nickname" id="nickname"  required />
 							</div>
 						</div>
-
 						<div>
 							<div>
 								<input type="submit" value="Register">
@@ -65,6 +60,11 @@
 	
 
 </body>
+
+<br/>
+<br/>
+
+
  <script type="text/javascript">
             function Redirect() {
             			document.location.href = '/fetchregisteredusers';
