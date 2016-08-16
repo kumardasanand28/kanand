@@ -18,12 +18,13 @@ import repository.UserRepositoryImpl;
 @Controller
 public class UserController extends UserService {
 
-	@Autowired
-	private UserRepositoryImpl userRepository;
-
+	private final UserRepositoryImpl userRepository = new UserRepositoryImpl();;
+	
 	@RequestMapping("/")
-	public String welcome() {
-		return "main";
+	public ModelAndView welcome() {
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("main");
+		return mav;
 	}
 
 
@@ -46,29 +47,31 @@ public class UserController extends UserService {
 
 
 	@RequestMapping(value="/user/", method=RequestMethod.POST)
-	public String createUser(@RequestBody User user) {
-
+	public ModelAndView createUser(@RequestBody User user) {
+		ModelAndView mav = new ModelAndView();
 		try {
 			userRepository.save(user);
+
+			mav.setViewName("main");
 		} catch (Exception e) {
 			System.out.println("Error: " + e.toString());
 		}
-		return "main";
+		return mav;
 	}
-	
-	
-	@RequestMapping(value="/removeuser/", method=RequestMethod.POST)
-	public String removeUser(@RequestBody String email) {
 
+
+	@RequestMapping(value="/removeuser/", method=RequestMethod.POST)
+	public ModelAndView removeUser(@RequestBody String email) {
+		ModelAndView mav = new ModelAndView();
 
 		try {
-			System.out.println(email);
 			User user = userRepository.findUser(email);
 			userRepository.remove(user);
+			mav.setViewName("userlist");
 		} catch (Exception e) {
 			System.out.println("Error: " + e.toString());
 		}
-		return "userlist";
+		return mav;
 	}
 
 }
