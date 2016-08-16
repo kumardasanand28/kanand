@@ -42,6 +42,9 @@ public class UserTestService {
 	
 	public static String[] userDetailsList = {"testuser@gmail.com","testuser","testpassword"};
 
+	static final String HOME_PAGE = "main";
+	
+	static final String ADMIN_PAGE = "userlist";
 
 	@Bean
 	public UserService userService() {
@@ -61,7 +64,7 @@ public class UserTestService {
 
 	@Test
 	public void verify_load_Home_Page() throws Exception{
-		getMockController().perform(get(HOST)).andExpect(status().isOk()).andExpect(view().name("main"))
+		getMockController().perform(get(HOST)).andExpect(status().isOk()).andExpect(view().name(HOME_PAGE))
 		.andDo(print());
 	}
 
@@ -77,12 +80,12 @@ public class UserTestService {
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
 		ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
-		String requestJson=ow.writeValueAsString(user );
+		String requestJson=ow.writeValueAsString(user);
 
 		getMockController().perform(post(HOST+"user/").contentType(APPLICATION_JSON_UTF8).content(requestJson))
 						   .andExpect(status().isOk())
 						   .andDo(print())
-						   .andExpect(view().name("main"));
+						   .andExpect(view().name(HOME_PAGE));
 	}
 
 	@Test
@@ -90,7 +93,7 @@ public class UserTestService {
 
 		getMockController().perform(get(HOST+"fetchregisteredusers/"))
 														.andExpect(status().isOk())
-														.andExpect(view().name("userlist"))
+														.andExpect(view().name(ADMIN_PAGE))
 														.andExpect(model().attributeExists("userlist"))
 														.andDo(print());
 
@@ -101,7 +104,7 @@ public class UserTestService {
 	
 		getMockController().perform(post(HOST+"removeuser/").content( userDetailsList[0]))
 															.andExpect(status().isOk())
-															.andExpect(view().name("userlist"))
+															.andExpect(view().name(ADMIN_PAGE))
 															.andDo(print());
 		
 	}
