@@ -10,7 +10,7 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>SampleWebApp</servlet-name>
-		<url-pattern>/Register</url-pattern>
+		<url-pattern>/UserRegistrationServlet</url-pattern>
 	</servlet-mapping>
 	  <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>

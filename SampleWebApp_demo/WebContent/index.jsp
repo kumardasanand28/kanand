@@ -1,8 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
 <html>
 <head>
+<script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+<script src="js/app-ajax.js"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>User Data</title>
 </head>
@@ -16,8 +19,10 @@ div.ex {
 </style>
 <body>
 	<h1>Registration Form</h1>
+	
+	<div class="result">    
 	<div class="ex">
-		<form action="UserRegistrationServlet" method="post">
+		<form action="UserRegistrationServlet" method="POST" id="register">
 			<table style="with: 50%">
 				<tr>
 					<td>Full Name</td>
@@ -39,9 +44,24 @@ div.ex {
 					<td>Year Passed</td>
 					<td><input type="text" name="yop" /></td>
 				</tr>
+				<tr>
+					<td>Gender</td>
+					<td><input type="radio" name="gender" value="male" /> Male
+					<input type="radio" name="gender" value="female" />Female</td>
+				</tr>
+				<tr>
+					<td>Interests</td>
+					<td>
+					<input type="checkbox" name="interest" value="cricket" />Cricket 
+					<input type="checkbox" name="interest" value="hockey" />Hockey
+					<input type="checkbox" name="interest" value="football" />FootBall
+					<input type="checkbox" name="interest" value="tt" />Table Tennis
+					</td>
+				</tr>
 			</table>
-			<input type="submit" value="Register" />
+			<input type="submit" value="Register" id="submitButton" />
 		</form>
+	</div>
 	</div>
 </body>
 </html>

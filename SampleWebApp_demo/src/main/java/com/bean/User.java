@@ -12,6 +12,10 @@ public class User {
 	private int percentage;
 	
 	private int yearPassed;
+	
+	private String gender;
+	
+	private String[] interests;
 
 	public String getFullName() {
 		return fullName;
@@ -51,5 +55,21 @@ public class User {
 
 	public void setYearPassed(int yearPassed) {
 		this.yearPassed = yearPassed;
+	}
+
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
+	public String[] getInterests() {
+		return interests;
+	}
+
+	public void setInterests(String[] interests) {
+		this.interests = interests;
 	}
 }

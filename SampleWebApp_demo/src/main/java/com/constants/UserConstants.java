@@ -12,5 +12,9 @@ public class UserConstants {
 	public static final String PERCENTAGE = "percent";
 
 	public static final String YEAR_PASSED = "yop";
+	
+	public static final String GENDER = "gender";
+	
+	public static final String INTERESTS = "interest";
 
 }

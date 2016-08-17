@@ -1,18 +1,20 @@
-/*var form = $('#form1');
-form.submit(function() {
+$(document).ready(function(event){
+	$("#submitButton").on("click", function(){
+		$.ajax({
+			type: "POST",
+			url: "UserRegistrationServlet", 
+			data: $("#register").serialize(),
+			success: function(msg){
+				console.log(msg);
+				console.log(msg);
+				$('#result').html(msg);
+				$('#ex').show();
+			},
+			error: function(){
+				$('#result').html(msg);
+			}
+		});
 
-	alert("called");
-	$.ajax({
-		type : form.attr('method'),
-		url : form.attr('action'),
-		data : form.serialize(),
-		success : function(data) {
-			var result = data;
-			$('#result').attr("value", result);
-
-		}
 	});
 
-	return false;
 });
-*/
