@@ -1,43 +1,62 @@
 'use strict'
 
-App.factory('userService', [ '$http', '$q', function($http, $q) {
-
-	return {
-
-		createUser : function(user) {
-			return $http.post('/user/', user).then(function(response) {
-				return $http.post('/user/', user);
-			}, function(errResponse) {
-				console.error('Error while creating user');
-				return $q.reject(errResponse)
-			}
-
-			);
-		}
-
-	};
-	
-} ]);
+angular.module('User').factory('userService', ['$http', '$q', function($http, $q){
 
 
+    var factory = {
+        fetchAllUsers: fetchAllUsers,
+        createUser: createUser,
+        deleteUser:deleteUser
+    };
+
+    return factory;
+
+    function fetchAllUsers() {
+        var deferred = $q.defer();
+        $http.get('/listusers/')
+            .then(
+            function (response) {
+                deferred.resolve(response.data);
+            },
+            function(errResponse){
+                console.error('Error while fetching Users');
+                deferred.reject(errResponse);
+            }
+        );
+        return deferred.promise;
+    }
+
+    function createUser(user) {
+        var deferred = $q.defer();
+        $http.post('/user/', user)
+            .then(
+            function (response) {
+                deferred.resolve(response.data);
+            },
+            function(errResponse){
+                console.error('Error while creating User');
+                deferred.reject(errResponse);
+            }
+        );
+        return deferred.promise;
+    }
 
 
+    function deleteUser(id) {
+    	alert(id);
+        var deferred = $q.defer();
+        $http.post('/removeuser/',id)
+            .then(
+            function (response) {
+                deferred.resolve(response.data);
+            },
+            function(errResponse){
+                console.error('Error while deleting User');
+                deferred.reject(errResponse);
+            }
+        );
+        return deferred.promise;
+    }
 
-App.factory('removeService', [ '$http', '$q', function($http, $q) {
-
-return {
-
-	remove : function(email) {
-		return $http.post('/removeuser/', email).then(function(response) {
-			return  $http.get('/fetchregisteredusers/');
-		}, function(errResponse) {
-			console.error('Error while Removing user');
-			return $q.reject(errResponse)
-		}
-
-		);
-	}
-
-};
-} ]);
+}]);
 

@@ -1,57 +1,87 @@
 'use strict'
 
-App.controller('userController', ['$scope','userService','removeService',function($scope, userService,removeService) {
-			
-			var self = this;
-			
-			
-			self.user = {
-				email : '',
-				password : '',
-				nickname : '',
-			};
-			
-			
-			self.users = [];
+App.controller('userController', ['$scope','userService',function($scope, userService) {
 
-			self.createUser = function(user) {
-				userService.createUser(user).then(
-						console.log('Successfully Created'), function(errResponse) {
-							console.error('Error while creating User');
-						});
-			};
-			
-			self.removeUser = function(email) {
-				removeService.remove(email).then(
-						 window.location.reload(false), function(errResponse) {
-							console.error('Error while removing User');
-						});
-			};
+	var self = this;
 
-			self.submit = function() {
 
-				
-				self.createUser(self.user);
+	self.user = {
+			email : '',
+			id : null,
+			name : '',
+			nickname : '',
+	};
 
-				self.reset();
-			};
-			
-			
 
-			self.remove = function(e){
-				self.removeUser(e.currentTarget.value);
-				
-			};
-			
-			
-			
-			self.reset = function() {
-				self.user = {
-					email : '',
-					password : '',
-					nickname : ''
-				};
-				$scope.register.$setPristine(); // reset Form
-			};
-			
-		}]);
+	self.users = [];
+
+	self.submit = submit;
+	self.remove = remove;
+	self.reset = reset;
+
+	fetchAllUsers();
+
+	function fetchAllUsers(){
+		console.log('Called fetchAllUsers User');
+		userService.fetchAllUsers()
+		.then(
+				function(d) {
+					self.users = d;
+				},
+				function(errResponse){
+					console.error('Error while fetching Users');
+				}
+		);
+	};
+
+
+	function createUser(user){
+		console.log('Called Create User');
+		userService.createUser(user)
+		.then(
+				fetchAllUsers,
+				function(errResponse){
+					console.error('Error while creating User');
+				}
+		);
+	};
+
+
+
+	function deleteUser(id){
+		console.log('Called Delete User');
+		userService.deleteUser(id)
+		.then(
+				fetchAllUsers,
+				function(errResponse){
+					console.error('Error while deleting User');
+				}
+		);
+	};
+
+
+
+
+
+	function submit() {
+		alert('Called Submit');
+		console.log('Saving New User', self.user);
+		createUser(self.user);
+		reset();
+	};
+
+
+
+
+	function remove(id){
+		console.log('id to be deleted', id);
+		deleteUser(id);
+	};
+
+
+	function reset(){
+		self.user={id:null,name:'',address:'',email:''};
+		$scope.register.$setPristine(); 
+	};
+
+}]);

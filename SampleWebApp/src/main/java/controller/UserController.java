@@ -9,6 +9,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,15 +20,15 @@ import org.springframework.web.util.UriComponentsBuilder;
 import repository.UserRepositoryImpl;
 import service.UserService;
 
-@RestController
+@Controller
 public class UserController extends UserService {
 
 	@Autowired
 	UserRepositoryImpl userRepository;
 
-	@RequestMapping("/")
+	@RequestMapping(value="/", method = RequestMethod.GET)
 	public String welcome() {
-		return "main";
+		return "UserManagement";
 	}
 
 
@@ -73,11 +74,11 @@ public class UserController extends UserService {
 
 
 	@RequestMapping(value="/removeuser/", method=RequestMethod.POST)
-	public ResponseEntity<User> removeUser(@RequestBody String email) {
+	public ResponseEntity<User> removeUser(@RequestBody String id) {
 
 		try {
 
-			User user = userRepository.findUser(email);
+			User user = userRepository.findUser(id);
 			if (user == null) {
 				return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
 			}

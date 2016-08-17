@@ -30,8 +30,8 @@ public class UserRepositoryImpl implements UserRepository {
 		return mongoOperation.findAll(User.class);
 	}
 
-	public User findUser(String email) {
-		BasicQuery query = new BasicQuery("{ 'email':'"+email+"' }");
+	public User findUser(String id) {
+		BasicQuery query = new BasicQuery("{ 'id':'"+id+"' }");
 		return mongoOperation.findOne(query, User.class);
 	}
 	

@@ -6,10 +6,13 @@ import org.springframework.data.annotation.Id;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
+
 public class User {
 
 	@Id
 	private String id;
+	
+	private String name;
 
 	private String email;
 	
@@ -26,9 +29,12 @@ public class User {
 		this.active = true;
 		this.createdDate = new Date();
 	}
+	
+	
 
-	public User(String email, String password, String nickname) {
+	public User(String name,String email, String password, String nickname) {
 		super();
+		this.name = name;
 		this.email = email;
 		this.password = password;
 		this.nickname = nickname;
@@ -36,6 +42,9 @@ public class User {
 		this.createdDate = new Date();
 	}
 
+	
+	
+	
 	public String getId() {
 		return id;
 	}
@@ -82,5 +91,13 @@ public class User {
 
 	public void setCreatedDate(Date createdDate) {
 		this.createdDate = createdDate;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 }
