@@ -22,7 +22,6 @@ App.controller('userController', ['$scope','userService',function($scope, userSe
 	fetchAllUsers();
 
 	function fetchAllUsers(){
-		console.log('Called fetchAllUsers User');
 		userService.fetchAllUsers()
 		.then(
 				function(d) {
@@ -49,7 +48,6 @@ App.controller('userController', ['$scope','userService',function($scope, userSe
 
 
 	function deleteUser(id){
-		console.log('Called Delete User');
 		userService.deleteUser(id)
 		.then(
 				fetchAllUsers,
@@ -64,7 +62,6 @@ App.controller('userController', ['$scope','userService',function($scope, userSe
 
 
 	function submit() {
-		alert('Called Submit');
 		console.log('Saving New User', self.user);
 		createUser(self.user);
 		reset();

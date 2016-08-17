@@ -81,7 +81,7 @@
                    <div class="form-group col-md-12">
                 <label class="col-md-2 control-lable" for="file">Nick Name</label>
                  <div class="col-md-7">
-                   <input type="nickname" ng-model="ctrl.user.nickname" name="nickname" class="form-control input-sm" placeholder="Enter your Password" required/>
+                   <input type="nickname" ng-model="ctrl.user.nickname" name="nickname" class="form-control input-sm" placeholder="Enter your Nick Name" required/>
                      </div>
                    </div>
                  </div>
@@ -103,7 +103,7 @@
                 <!-- Default panel contents -->
               <div class="panel-heading"><span class="lead">List of Users </span></div>
               <div class="tablecontainer">
-                  <table class="table table-hover">
+                  <table class="table">
                       <thead>
                           <tr>
                               <th>ID.</th>

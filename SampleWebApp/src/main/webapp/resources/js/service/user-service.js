@@ -43,7 +43,6 @@ angular.module('User').factory('userService', ['$http', '$q', function($http, $q
 
 
     function deleteUser(id) {
-    	alert(id);
         var deferred = $q.defer();
         $http.post('/removeuser/',id)
             .then(
