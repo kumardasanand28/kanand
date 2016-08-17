@@ -6,7 +6,7 @@
 <head>
 <link href="<c:url value='/resources/css/app.css' />" rel="stylesheet"></link>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-<title>Register</title>
+<title>Registration Sample Single Page Application</title>
 
 </head>
 
@@ -30,16 +30,6 @@
       .email.ng-dirty.ng-invalid-email {
           background-color: yellow;
       }      
-       .nickname.ng-valid {
-          background-color: lightgreen;
-      }
-      .nickname.ng-dirty.ng-invalid-required {
-          background-color: red;
-      }
-      .nickname.ng-dirty.ng-invalid-email {
-          background-color: yellow;
-      }
-
     </style>
 
 <body ng-app="User" class="ng-cloak">
@@ -55,11 +45,6 @@
                 <label class="col-md-2 control-lable" for="file">Name</label>
                  <div class="col-md-7">
                     <input type="text" ng-model="ctrl.user.name" name="name" class="username form-control input-sm" placeholder="Enter your name" required ng-minlength="3"/>
-                      <div class="has-error" ng-show="myForm.$dirty">
-                                      <span ng-show="myForm.uname.$error.required">This is a required field</span>
-                                      <span ng-show="myForm.uname.$error.minlength">Minimum length required is 3</span>
-                                      <span ng-show="myForm.uname.$invalid">This field is invalid </span>
-                                  </div>
                      </div>
                    </div>
                  </div>
@@ -69,10 +54,6 @@
                 <label class="col-md-2 control-lable" for="file">Email</label>
                  <div class="col-md-7">
                    <input type="email" ng-model="ctrl.user.email" name="email" class="email form-control input-sm" placeholder="Enter your Email" required/>
-                      <div class="has-error" ng-show="myForm.$dirty">
-                                      <span ng-show="myForm.email.$error.required">This is a required field</span>
-                                      <span ng-show="myForm.email.$invalid">This field is invalid </span>
-                       </div>
                      </div>
                    </div>
                  </div>

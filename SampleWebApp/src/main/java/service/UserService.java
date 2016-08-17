@@ -14,7 +14,7 @@ public abstract class UserService {
 	
 	public abstract String welcome();
 	public abstract ResponseEntity<List<User>> listAllUsers();
-	public abstract ResponseEntity<Void> createUser(@RequestBody User user,UriComponentsBuilder ucBuilder);
+	public abstract ResponseEntity<Void> createUser(@RequestBody User user);
 	public abstract ResponseEntity<User> removeUser(@RequestBody String email);
 
 }
