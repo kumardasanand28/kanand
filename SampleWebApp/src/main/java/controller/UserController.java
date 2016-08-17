@@ -3,73 +3,94 @@ package controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.stereotype.Controller;
+import model.User;
+
+import org.springframework.http.HttpHeaders;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.util.UriComponentsBuilder;
 
-import model.User;
 import repository.UserRepositoryImpl;
 import service.UserService;
 
-@Controller
+@RestController
 public class UserController extends UserService {
 
-	private final UserRepositoryImpl userRepository = new UserRepositoryImpl();;
-	
+	@Autowired
+	UserRepositoryImpl userRepository;
+
 	@RequestMapping("/")
-	public ModelAndView welcome() {
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName("main");
-		return mav;
+	public String welcome() {
+		return "main";
 	}
 
 
-	@RequestMapping(value="/fetchregisteredusers", method=RequestMethod.GET)
-	public ModelAndView fetchRegisteredUsers() {
+	@RequestMapping(value="/listusers", method=RequestMethod.GET)
+	public ResponseEntity<List<User>> listAllUsers() {
 		try {
-			ModelAndView mav = new ModelAndView();
-			mav.setViewName("userlist");
-
 			List<User> registeredUserList = new ArrayList<User>();
 			registeredUserList.addAll(userRepository.findAll());
-			mav.addObject("userlist", registeredUserList);
-			return mav;
+
+			if(registeredUserList.size() == 0){
+				return new ResponseEntity<List<User>>(HttpStatus.NO_CONTENT);
+			}
+			return new ResponseEntity<List<User>>(registeredUserList,HttpStatus.OK);
 		} catch (Exception e) {
 			System.out.println("Error: " + e.toString());
 		}
-		return null;
+		return new ResponseEntity<List<User>>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 
 
 	@RequestMapping(value="/user/", method=RequestMethod.POST)
-	public ModelAndView createUser(@RequestBody User user) {
-		ModelAndView mav = new ModelAndView();
+	public ResponseEntity<Void> createUser(@RequestBody User user,UriComponentsBuilder ucBuilder) {
+
+		String emailid = user.getEmail();
 		try {
+			User existingUser = userRepository.findUser(emailid);
+			if(existingUser != null){
+				return new ResponseEntity<Void>(HttpStatus.CONFLICT);
+			}
+
 			userRepository.save(user);
 
-			mav.setViewName("main");
+			HttpHeaders headers = new HttpHeaders();
+			headers.setLocation(ucBuilder.path("/user/{id}").buildAndExpand(user.getId()).toUri());
+			return new ResponseEntity<Void>(headers,HttpStatus.OK);
+
 		} catch (Exception e) {
 			System.out.println("Error: " + e.toString());
 		}
-		return mav;
+		return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 
 	@RequestMapping(value="/removeuser/", method=RequestMethod.POST)
-	public ModelAndView removeUser(@RequestBody String email) {
-		ModelAndView mav = new ModelAndView();
+	public ResponseEntity<User> removeUser(@RequestBody String email) {
 
 		try {
+
 			User user = userRepository.findUser(email);
+			if (user == null) {
+				return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
+			}
+
 			userRepository.remove(user);
-			mav.setViewName("userlist");
+			return new ResponseEntity<User>(HttpStatus.NO_CONTENT);
 		} catch (Exception e) {
 			System.out.println("Error: " + e.toString());
 		}
-		return mav;
+		return new ResponseEntity<User>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
+
+
+
 
 }
