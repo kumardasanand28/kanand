@@ -20,9 +20,9 @@ div.ex {
 <body>
 	<h1>Registration Form</h1>
 	
-	<div class="result">    
+	<div id="result"></div> 
 	<div class="ex">
-		<form action="UserRegistrationServlet" method="POST" id="register">
+		<form id="register">
 			<table style="with: 50%">
 				<tr>
 					<td>Full Name</td>
@@ -59,9 +59,10 @@ div.ex {
 					</td>
 				</tr>
 			</table>
-			<input type="submit" value="Register" id="submitButton" />
+			<!-- <input type="submit" value="Register" id="submitButton" /> -->
+			<button >Register</button>
 		</form>
 	</div>
-	</div>
+	
 </body>
 </html>
