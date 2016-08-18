@@ -1,10 +1,11 @@
 $(document).ready(function(){
 	  
-	$("#register").submit(function(event){
-		console.log('called ajax');
+	$(document).on('click', '.submitform', function(event){
+		var id = $(this).attr('id');
+		var name = $(this).attr('name');
 		$.ajax({
 			type: "POST",
-			url: "UserRegistrationServlet", 
+			url: "UserRegistrationServlet"+"?action="+id+"&name="+name, 
 			data: $("#register").serialize(),
 			success: function(msg){
 				console.log(msg);
@@ -17,5 +18,7 @@ $(document).ready(function(){
 		});
 		 event.preventDefault();
 	});
+	
+	
 
 });

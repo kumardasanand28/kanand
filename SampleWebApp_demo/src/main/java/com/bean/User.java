@@ -3,6 +3,8 @@ package main.java.com.bean;
 public class User {
 
 	
+	private int id;
+	
 	private String fullName;
 	
 	private int age;
@@ -71,5 +73,13 @@ public class User {
 
 	public void setInterests(String[] interests) {
 		this.interests = interests;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 }
