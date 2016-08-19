@@ -20,6 +20,46 @@ div.ex {
 	margin: 0px
 }
 </style>
+
+<button id="verifyConnection" class="verifyConnection">Verify Connection</button>
+<script type="text/javascript">
+
+$(document).on('click', '.verifyConnection', function(event){
+	alert('Going to verify database connection');
+	$.ajax({
+		type: "POST",
+		url: "UserRegistrationServlet"+"?action=verifyConnection", 
+		success: function(msg){
+			$('#result').html(msg);
+		},
+		error: function(){
+			$('#result').html(msg);
+		}
+	});
+	 event.preventDefault();
+});
+</script>
+
+<button id="createtable" class="createtable">Create Table in MySQL</button>
+<script type="text/javascript">
+
+$(document).on('click', '.createtable', function(event){
+	alert('Going to create database');
+	$.ajax({
+		type: "POST",
+		url: "UserRegistrationServlet"+"?action=createDatabase", 
+		success: function(msg){
+			console.log(msg);
+		},
+		error: function(){
+			console.log("Error");
+		}
+	});
+	 event.preventDefault();
+});
+</script>
+	
+	
 <script type="text/javascript">
 
 
@@ -162,6 +202,6 @@ $(document).ready(function(){
 			</div>
 		</div>
 	</div>
-	<a href="/SampleWebApp/listUsers.jsp">List Users</a>
+	<a href="/listUsers.jsp">List Users</a>
 </body>
 </html>

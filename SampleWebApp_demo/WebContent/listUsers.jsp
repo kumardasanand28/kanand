@@ -67,7 +67,7 @@ $( document ).ready(function() {
 			var id = $(this).attr('id');
 			var name = $(this).attr('name');
 			if (id = 'editUser') {
-				window.location.href = '/SampleWebApp?name='+name; 
+				window.location.href = '/?name='+name; 
 			}
 		});
 	</script>

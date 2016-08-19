@@ -1,6 +1,7 @@
 package main.java.com;
 
 import java.io.IOException;
+import java.sql.Connection;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -24,7 +25,13 @@ public class UserRegistrationServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
+		
+		
+		response.setHeader("Access-Control-Allow-Origin", "*");
+	    response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
+	    response.setHeader("Access-Control-Max-Age", "3600");
+	    response.setHeader("Access-Control-Allow-Headers", "x-requested-with");
+	    
 		String action = request.getParameter("action");
 		String name = request.getParameter("name");
 
@@ -47,7 +54,32 @@ public class UserRegistrationServlet extends HttpServlet {
 			}else{
 				response.getWriter().write("Validation Failure");
 			}
-		} else {
+		}else if(action != null && action.equalsIgnoreCase("createDatabase")){
+			try {
+				userService.createUserTable();
+				response.getWriter().write("SuccessFully Created");
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				response.getWriter().write("Creation Failed");
+			}
+		}else if(action != null && action.equalsIgnoreCase("verifyConnection")){
+			try {
+				Connection con = userService.getMySqlConnection();
+				if(con != null){
+					response.getWriter().write("SuccessFully Connected");
+				}else{
+					response.getWriter().write("Connection Failed");
+				}
+			
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				response.getWriter().write(e.getMessage());
+			}
+			
+		}
+		else {
 			User user = new User();
 			response.setContentType("text/html;charset=UTF-8");
 			boolean isValid = validateUserDetails(request);
@@ -71,6 +103,11 @@ public class UserRegistrationServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
+		response.setHeader("Access-Control-Allow-Origin", "*");
+	    response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
+	    response.setHeader("Access-Control-Max-Age", "3600");
+	    response.setHeader("Access-Control-Allow-Headers", "x-requested-with");
+	    
 		String param = request.getParameter("getAllValues");
 
 		if (param != null && param.equalsIgnoreCase("true")) {
