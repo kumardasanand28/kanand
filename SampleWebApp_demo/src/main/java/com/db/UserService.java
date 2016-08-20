@@ -94,7 +94,7 @@ public class UserService {
 		jpaBean.setQualification(user.getQualification());
 		jpaBean.setYearPassed(user.getYearPassed());
 		jpaBean.setGender(user.getGender());
-		jpaBean.setInterests(Arrays.toString(user.getInterests()));
+		jpaBean.setInterests((Arrays.toString(user.getInterests())).substring(1, (Arrays.toString(user.getInterests()).length()-1)));
 		
 		
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("persistenceUnit");
