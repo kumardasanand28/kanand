@@ -202,6 +202,6 @@ $(document).ready(function(){
 			</div>
 		</div>
 	</div>
-	<a href="/listUsers.jsp">List Users</a>
+	<a href="/SampleWebApp/listUsers.jsp">List Users</a>
 </body>
 </html>

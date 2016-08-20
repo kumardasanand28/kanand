@@ -1,21 +1,25 @@
 package main.java.com.db;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.persistence.Query;
+
 import main.java.com.aws.AWSConnectionManager;
 import main.java.com.bean.User;
+import main.java.com.bean.jpa.UserJPABean;
 
 public class UserService {
 
 	public List<User> fetchUsers() throws Exception {
 
-		String query = "SELECT * FROM USERS";
+		String query = "SELECT u FROM UserJPABean u";
 		List<User> userList = fetchUser(query);
 
 		return userList;
@@ -24,7 +28,7 @@ public class UserService {
 
 	public User fetchUser(int id) throws Exception {
 
-		String query = "SELECT * FROM USERS where id=" + id;
+		String query = "SELECT u FROM UserJPABean u where u.id=" + id;
 		List<User> userList = fetchUser(query);
 
 		return userList.get(0);
@@ -32,46 +36,74 @@ public class UserService {
 	}
 
 	private List<User> fetchUser(String query) throws Exception {
-		List<User> userList = new ArrayList<>();
-		Class.forName("com.mysql.jdbc.Driver");
-		Connection conn = getMySqlConnection();
-		Statement st = conn.createStatement();
-		ResultSet rs = st.executeQuery(query);
+		List<UserJPABean> userList = new ArrayList<UserJPABean>();
+		EntityManagerFactory emfactory = Persistence.createEntityManagerFactory("persistenceUnit" );
+		EntityManager entitymanager = emfactory.createEntityManager();
+
+		Query jpaQuery = entitymanager.createQuery(query,UserJPABean.class);
+		userList = jpaQuery.getResultList();
+		List<User> list = copyToUserBean(userList);
+		return list;
+	}
+
+	private List<User> copyToUserBean(List<UserJPABean> userList) {
+		List<User> list = new ArrayList<User>();
 		User user = null;
-		while (rs.next()) {
+		for(UserJPABean bean : userList){
 			user = new User();
-			user.setId(rs.getInt("id"));
-			user.setFullName(rs.getString("FULL_NAME"));
-			user.setAge(rs.getInt("AGE"));
-			user.setQualification(rs.getString("QUALIFICATION"));
-			user.setYearPassed(rs.getInt("PASSED_YEAR"));
-			user.setGender(rs.getString("GENDER"));
-			String interests = rs.getString("INTERESTS");
+			user.setId(bean.getId());
+			user.setFullName(bean.getFullName());
+			user.setAge(bean.getAge());
+			user.setQualification(bean.getQualification());
+			user.setYearPassed(bean.getYearPassed());
+			user.setGender(bean.getGender());
+			String interests = bean.getInterests();
 			user.setInterests(interests.split(","));
-			userList.add(user);
+			list.add(user);
 		}
-		st.close();
-		return userList;
+		return list;
 	}
 
 	public void updateUser(User user) throws Exception {
-		Class.forName("com.mysql.jdbc.Driver");
-		Connection conn = getMySqlConnection();
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("persistenceUnit");
+		EntityManager em = emf.createEntityManager();
+		UserJPABean jpaBean = em.find(UserJPABean.class, user.getId());
+		
+		
+		em.getTransaction().begin();
+		jpaBean.setFullName(user.getFullName());
+		jpaBean.setAge(user.getAge());
+		jpaBean.setQualification(user.getQualification());
+		jpaBean.setYearPassed(user.getYearPassed());
+		jpaBean.setGender(user.getGender());
+		jpaBean.setInterests((Arrays.toString(user.getInterests())).substring(1, (Arrays.toString(user.getInterests()).length()-1)));
+		em.persist(jpaBean);
+		em.getTransaction().commit();
+		em.close();
 
-		String query = "update USERS set FULL_NAME =?,AGE= ?,QUALIFICATION=?,PASSED_YEAR=?, GENDER=?,INTERESTS=? where id=?";
-		PreparedStatement preparedStmt = conn.prepareStatement(query);
-		preparedStmt.setString(1, user.getFullName());
-		preparedStmt.setInt(2, user.getAge());
-		preparedStmt.setString(3, user.getQualification());
-		preparedStmt.setInt(4, user.getYearPassed());
-		preparedStmt.setString(5, user.getGender());
-		preparedStmt.setString(6, getInterestList(user.getInterests()));
-		preparedStmt.setInt(7, user.getId());
-		// execute the preparedstatement
-		preparedStmt.execute();
-
-		conn.close();
-
+	}
+	
+	
+	/**
+	 * @param user
+	 */
+	private void persistUserData(User user) {
+		UserJPABean jpaBean = new UserJPABean();
+		jpaBean.setFullName(user.getFullName());
+		jpaBean.setAge(user.getAge());
+		jpaBean.setQualification(user.getQualification());
+		jpaBean.setYearPassed(user.getYearPassed());
+		jpaBean.setGender(user.getGender());
+		jpaBean.setInterests(Arrays.toString(user.getInterests()));
+		
+		
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("persistenceUnit");
+		EntityManager em = emf.createEntityManager();
+		
+		em.getTransaction().begin();
+		em.persist(jpaBean);
+		em.getTransaction().commit();
+		em.close();
 	}
 
 	public void createUserTable() throws Exception{
@@ -85,24 +117,7 @@ public class UserService {
 		System.out.println(rs);
 	}
 	public void insertIntoDataBase(User user) throws Exception {
-		Class.forName("com.mysql.jdbc.Driver");
-		Connection conn = getMySqlConnection();
-
-		String insertQuery = " insert into USERS (FULL_NAME, AGE, QUALIFICATION, PASSED_YEAR, GENDER, INTERESTS)"
-				+ " values (?, ?, ?, ?, ?,?)";
-
-		PreparedStatement preparedStmt = conn.prepareStatement(insertQuery);
-		preparedStmt.setString(1, user.getFullName());
-		preparedStmt.setInt(2, user.getAge());
-		preparedStmt.setString(3, user.getQualification());
-		preparedStmt.setInt(4, user.getYearPassed());
-		preparedStmt.setString(5, user.getGender());
-		preparedStmt.setString(6, getInterestList(user.getInterests()));
-
-		// execute the preparedstatement
-		preparedStmt.execute();
-
-		conn.close();
+		persistUserData(user);
 
 	}
 
