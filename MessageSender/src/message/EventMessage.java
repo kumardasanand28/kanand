@@ -42,11 +42,4 @@ public class EventMessage implements Serializable {
 		this.messageList = messageText;
 
 	}
-
-	public String toString(){
-
-		return "Message Id = "+getMessageId()+" ; Message Text = "+getMessageText();
-
-	}
-
 }
