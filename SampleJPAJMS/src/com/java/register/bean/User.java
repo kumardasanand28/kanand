@@ -1,5 +1,8 @@
 package com.java.register.bean;
 
+import java.util.List;
+import java.util.Map;
+
 public class User {
 
 	
@@ -15,15 +18,10 @@ public class User {
 	
 	private String gender;
 	
-	private String street;
 
-	private String city;
-
-	private String state;
-
-	private String zip;
+	private List<Address> addressList;
 	
-	private String addressNickName;
+	private String addressAsText;
 
 
 	public String getFullName() {
@@ -73,44 +71,40 @@ public class User {
 	public void setId(long id) {
 		this.id = id;
 	}
-
-	public String getStreet() {
-		return street;
+	public List<Address> getAddressList() {
+		return addressList;
 	}
 
-	public void setStreet(String street) {
-		this.street = street;
+	public void setAddressList(List<Address> addressList) {
+		this.addressList = addressList;
 	}
 
-	public String getCity() {
-		return city;
+	public String getAddressAsText() {
+		addressAsText = null;
+		StringBuffer sbf = new StringBuffer();
+		int count =1;
+		for(Address addressBean : addressList){
+			sbf.append("<p>");
+			sbf.append("<b>Address "+count+":    </b>");
+			sbf.append(addressBean.getAddressNickName());
+			sbf.append(" ");
+			sbf.append(addressBean.getStreet());
+			sbf.append(" ");
+			sbf.append( addressBean.getCity());
+			sbf.append(" ");
+			sbf.append(addressBean.getState());
+			sbf.append(" ");
+			sbf.append(addressBean.getZip());
+			sbf.append("</p>");
+			count++;
+		}
+		addressAsText = sbf.toString();
+		return addressAsText;
 	}
 
-	public void setCity(String city) {
-		this.city = city;
+	public void setAddressAsText(String addressAsText) {
+		this.addressAsText = addressAsText;
 	}
+	
 
-	public String getState() {
-		return state;
-	}
-
-	public void setState(String state) {
-		this.state = state;
-	}
-
-	public String getZip() {
-		return zip;
-	}
-
-	public void setZip(String zip) {
-		this.zip = zip;
-	}
-
-	public String getAddressNickName() {
-		return addressNickName;
-	}
-
-	public void setAddressNickName(String addressNickName) {
-		this.addressNickName = addressNickName;
-	}
 }

@@ -4,8 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
-<script src="js/app-ajax.js"></script>
+<script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
 <link src="css/app.css"  rel="stylesheet"></link>
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
@@ -29,7 +28,7 @@ $( document ).ready(function() {
     $.ajax({
 		type: "GET",
 		data:{"getAllValues" : "true"},
-		url: "UserRegistrationServlet", 
+		url: "register", 
 		success: function(responseJson){
 			var $table = $("<table border='2' class='table'>").appendTo($("#result")); 
 			$("<tr>").appendTo($table)
@@ -38,7 +37,7 @@ $( document ).ready(function() {
 					 .append($("<td>").text("QUALIFICATION"))
 					 .append($("<td>").text("YEAR PASSED"))
 			.append($("<td>").text("GENDER"))
-			.append($("<td>").text("INTERESTS"))
+			.append($("<td>").text("ADDRESS"))
 			.append($("<td>").text("ACTIONS"));
 			$("</tr>").appendTo($table);
 			$.each(responseJson, function(index, user) {   
@@ -48,8 +47,8 @@ $( document ).ready(function() {
 	            		.append($("<td>").text(user.qualification))
 	            		.append($("<td>").text(user.yearPassed))
 	            		.append($("<td>").text(user.gender))
-	            		.append($("<td>").text(user.interests))
-	            		.append($("<td>").html('<button id="editUser" name='+user.id+' class="action" >Edit</button>'));
+	            		.append($("<td>").html(user.addressAsText))
+	            		.append($("<td>").html('<button id="editUser" name='+user.id+' class="action" >Edit</button> <button id="deleteUser" name='+user.id+' class="action" >Delete</button> <button id="Addaddress" name='+user.id+' class="action" >Add Address</button>'));
 	            $("</tr>").appendTo($table);
 	        });
 		},
@@ -66,8 +65,10 @@ $( document ).ready(function() {
 		$(document).on('click', '.action', function() {
 			var id = $(this).attr('id');
 			var name = $(this).attr('name');
-			if (id = 'editUser') {
-				window.location.href = '/SampleWebApp?name='+name; 
+			if (id == 'editUser') {
+				window.location.href = '/SampleJPAJMS?name='+name+"&addAddress=false"; 
+			}else if(id == 'Addaddress'){
+				window.location.href = '/SampleJPAJMS?name='+name+"&addAddress=true"; 
 			}
 		});
 	</script>

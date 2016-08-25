@@ -1,7 +1,6 @@
 package com.java.register.service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -9,6 +8,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
+import com.java.register.bean.Address;
 import com.java.register.bean.User;
 import com.java.register.jpabean.AddressDetailsJPA;
 import com.java.register.jpabean.AddressJPABean;
@@ -38,33 +38,57 @@ public class UserService {
 
 	@SuppressWarnings("unchecked")
 	private List<User> fetchUser(String query) throws Exception {
-		List<UserJPABean> userList = new ArrayList<UserJPABean>();
-		EntityManagerFactory emfactory = Persistence.createEntityManagerFactory("persistenceUnit" );
-		EntityManager entitymanager = emfactory.createEntityManager();
-
-		Query jpaQuery = entitymanager.createQuery(query,UserJPABean.class);
-		userList = jpaQuery.getResultList();
+		List<UserJPABean> userList = fetchUserJPABean(query);
 		List<User> list = copyToUserBean(userList);
 		return list;
 	}
 
-	private List<User> copyToUserBean(List<UserJPABean> userList) {
-		List<User> list = new ArrayList<User>();
-		User user = null;
-		for(UserJPABean bean : userList){
-			user = new User();
-			user.setId(bean.getId());
-			user.setFullName(bean.getFullName());
-			user.setAge(bean.getAge());
-			user.setGender(bean.getGender());
-			list.add(user);
-		}
-		return list;
+	private List<UserJPABean> fetchUserJPABean(String query) {
+		List<UserJPABean> userList = new ArrayList<UserJPABean>();
+		EntityManager entitymanager = createEntityManager();
+
+		Query jpaQuery = entitymanager.createQuery(query,UserJPABean.class);
+		userList = jpaQuery.getResultList();
+		return userList;
+	}
+
+
+	public void addAddress(User user) throws Exception{
+		EntityManager em = createEntityManager();
+		UserJPABean jpaBean = em.find(UserJPABean.class, user.getId());
+
+		AddressDetailsJPA details = new AddressDetailsJPA();
+		AddressJPABean address = new AddressJPABean();
+		address.setAddressNickName(user.getAddressList().get(0).getAddressNickName());
+
+		details.setStreet(user.getAddressList().get(0).getStreet());
+		details.setCity(user.getAddressList().get(0).getCity());
+		details.setState(user.getAddressList().get(0).getState());
+		details.setZip(user.getAddressList().get(0).getZip());
+
+		em.getTransaction().begin();
+		//em.persist(jpaBean);
+
+		details.setAddress(address);
+		em.persist(details);
+
+		address.setUser(jpaBean);
+		em.persist(address);
+
+
+		em.getTransaction().commit();
+		em.close();
+
+	}
+
+	private EntityManager createEntityManager() {
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("persistenceUnit");
+		EntityManager em = emf.createEntityManager();
+		return em;
 	}
 
 	public void updateUser(User user) throws Exception {
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("persistenceUnit");
-		EntityManager em = emf.createEntityManager();
+		EntityManager em = createEntityManager();
 		UserJPABean jpaBean = em.find(UserJPABean.class, user.getId());
 
 
@@ -72,62 +96,95 @@ public class UserService {
 		jpaBean.setFullName(user.getFullName());
 		jpaBean.setAge(user.getAge());
 		jpaBean.setGender(user.getGender());
+		jpaBean.setPassedYear(user.getYearPassed());
+		jpaBean.setQualification(user.getQualification());
+
 		em.persist(jpaBean);
 		em.getTransaction().commit();
 		em.close();
 
 	}
 
-
-	/**
-	 * @param user
-	 */
-	private void persistUserData(User user) {
-		UserJPABean jpaBean = new UserJPABean();
-		jpaBean.setFullName(user.getFullName());
-		jpaBean.setAge(user.getAge());
-		jpaBean.setGender(user.getGender());
-
-
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("persistenceUnit");
-		EntityManager em = emf.createEntityManager();
-
-		em.getTransaction().begin();
-		em.persist(jpaBean);
-		em.getTransaction().commit();
-		em.close();
-	}
 
 	public void insertIntoDataBase(User user) throws Exception {
-		//persistUserData(user);
-
-		persistSampleData(user);
-
+		persistUserData(user);
 	}
 
-	private void persistSampleData(User user) {
+	private void persistUserData(User user) {
+
+		UserJPABean userBean = new UserJPABean();
 		AddressDetailsJPA details = new AddressDetailsJPA();
 		AddressJPABean address = new AddressJPABean();
-		address.setAddressNickName(user.getAddressNickName());
-		details.setStreet(user.getStreet());
-		details.setCity(user.getCity());
-		details.setState(user.getState());
-		details.setZip(user.getZip());
-		details.setAddress(address);
 
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("persistenceUnit");
-		EntityManager em = emf.createEntityManager();
+		userBean.setFullName(user.getFullName());
+		userBean.setAge(user.getAge());
+		userBean.setGender(user.getGender());
+		userBean.setPassedYear(user.getYearPassed());
+		userBean.setQualification(user.getQualification());
+		address.setAddressNickName(user.getAddressList().get(0).getAddressNickName());
+
+		details.setStreet(user.getAddressList().get(0).getStreet());
+		details.setCity(user.getAddressList().get(0).getCity());
+		details.setState(user.getAddressList().get(0).getState());
+		details.setZip(user.getAddressList().get(0).getZip());
+
+		EntityManager em = createEntityManager();
 		em.getTransaction().begin();
+		em.persist(userBean);
+
+		details.setAddress(address);
 		em.persist(details);
+
+		address.setUser(userBean);
+		em.persist(address);
+
+
 		em.getTransaction().commit();
 		em.close();
 
 	}
-
-	public String getInterestList(String[] interests) {
-		String list = Arrays.toString(interests);
-		return list.substring(1, list.length() - 1);
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	private List<User> copyToUserBean(List<UserJPABean> userList) {
+		List<User> list = new ArrayList<User>();
+		User user = null;
+		Address address = null;
+		for(UserJPABean bean : userList){
+			user = new User();
+			user.setId(bean.getId());
+			user.setFullName(bean.getFullName());
+			user.setAge(bean.getAge());
+			user.setGender(bean.getGender());
+			user.setQualification(bean.getQualification());
+			user.setYearPassed(bean.getPassedYear());
+			List<AddressJPABean> addressList = (List<AddressJPABean>) bean.getAddressList();
+			List<Address> addressUserList = new ArrayList<Address>();
+			for(AddressJPABean addressJpa : addressList){
+				address = new Address();
+				address.setAddressNickName(addressJpa.getAddressNickName());
+				address.setAddressId(addressJpa.getAddressId());
+				AddressDetailsJPA details = addressJpa.getAddressDetails();
+				address.setAddressDetailsid(details.getAddressDetailsid());
+				address.setCity(details.getCity());
+				address.setState(details.getState());
+				address.setZip(details.getZip());
+				address.setStreet(details.getStreet());
+				addressUserList.add(address);
+			}
+			user.setAddressList(addressUserList);
+			user.setAddressAsText(user.getAddressAsText());
+			list.add(user);
+		}
+		return list;
 	}
-
 
 }

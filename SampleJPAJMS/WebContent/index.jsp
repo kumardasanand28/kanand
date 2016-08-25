@@ -12,25 +12,26 @@
 <title>User Data</title>
 </head>
 <style>
-div.ex {
-	text-align: right width:300px;
-	padding: 10px;
-	border: 5px solid grey;
-	margin: 0px
+div.result {
+  color: red;
 }
+
+
 </style>
 
 <script type="text/javascript">
 $(document).ready(function(){
 	  
 	$(document).on('click', '.submitform', function(event){
+		var id = $(this).attr('id');
+		var name = $(this).attr('name');
 		$.ajax({
 			type: "POST",
-			url: "register?action=register", 
+			url: "register?action="+id+"&name="+name, 
 			data: $("#register").serialize(),
 			success: function(msg){
 				console.log(msg);
-				$('#result').html(msg);
+				$('#result').html('<font color="red">'+msg+'</font>');
 				$("#register").get(0).reset();
 			},
 			error: function(){
@@ -49,6 +50,7 @@ $(document).ready(function(){
 $(document).ready(function(){
 	
 	var param = "<%=request.getParameter("name")%>";
+	var addAddress = "<%=request.getParameter("addAddress")%>";
 		if (param != 'null') {
 			$.ajax({
 				type : "GET",
@@ -56,12 +58,20 @@ $(document).ready(function(){
 					"getAllValues" : "false",
 					"name" : param
 				},
-				url : "UserRegistrationServlet",
+				url : "register",
 				success : function(responseJson) {
+					console.log(responseJson);
 					$('#name').val(responseJson.fullName);
 					$('#age').val(responseJson.age);
 					$('#qual').val(responseJson.qualification);
 					$('#yop').val(responseJson.yearPassed);
+					if(addAddress == 'false'){
+						$('#aNickName').val(responseJson.addressList[0].addressNickName);
+						$('#street').val(responseJson.addressList[0].street);
+						$('#city').val(responseJson.addressList[0].city);
+						$('#state').val(responseJson.addressList[0].state);
+						$('#zip').val(responseJson.addressList[0].zip);
+					}
 					if (responseJson.gender == 'male') {
 						$("#male").prop("checked", true);
 					} else {
@@ -75,9 +85,18 @@ $(document).ready(function(){
 		}
 	});
 </script>
+<c:if test="${!empty param.name && param.addAddress == 'false'}">
+<c:set var="stateAddress" value="disabled"></c:set>
+</c:if>
+
+<c:if test="${!empty param.name && param.addAddress == 'true'}">
+<c:set var="stateOthers" value="disabled"></c:set>
+</c:if>
+
 <body class="ng-cloak">
 
-	<div id="result"></div>
+	<div id="result">
+	</div>
 
 	<div class="generic-container">
 		<div class="panel panel-default">
@@ -95,7 +114,7 @@ $(document).ready(function(){
 								Name</label>
 							<div class="col-md-7">
 								<input type="text" name="fullname" id="name"
-									class="username form-control input-sm" />
+									class="username form-control input-sm" ${stateOthers } />
 							</div>
 						</div>
 					</div>
@@ -105,7 +124,7 @@ $(document).ready(function(){
 							<label class="col-md-2 control-lable" for="file">Age</label>
 							<div class="col-md-7">
 								<input type="text" name="age" id="age"
-									class="form-control input-sm" />
+									class="form-control input-sm" ${stateOthers }/>
 							</div>
 						</div>
 					</div>
@@ -115,7 +134,7 @@ $(document).ready(function(){
 							<label class="col-md-2 control-lable" for="file">Qualification</label>
 							<div class="col-md-7">
 								<input type="text" name="qual" id="qual"
-									class="form-control input-sm" />
+									class="form-control input-sm" ${stateOthers } />
 							</div>
 						</div>
 					</div>
@@ -126,17 +145,7 @@ $(document).ready(function(){
 								Passed</label>
 							<div class="col-md-7">
 								<input type="text" name="yop" id="yop"
-									class="form-control input-sm" />
-							</div>
-						</div>
-					</div>
-
-					<div class="row">
-						<div class="form-group col-md-12">
-							<label class="col-md-2 control-lable" for="file">Gender</label>
-							<div class="col-md-7">
-								<input type="radio" name="gender" value="male" id="male" /> Male
-								<input type="radio" name="gender" value="female" id="female" />Female
+									class="form-control input-sm" ${stateOthers } />
 							</div>
 						</div>
 					</div>
@@ -146,7 +155,7 @@ $(document).ready(function(){
 							<label class="col-md-2 control-lable" for="file">Address Nick Name</label>
 							<div class="col-md-7">
 								<input type="text" name="aNickName" id="aNickName"
-									class="form-control input-sm"  autocomplete="on"/>
+									class="form-control input-sm"  autocomplete="on" ${stateAddress}/>
 							</div>
 						</div>
 					</div>
@@ -155,7 +164,7 @@ $(document).ready(function(){
 						<div class="form-group col-md-12">
 							<label class="col-md-2 control-lable" for="file">Street</label>
 							<div class="col-md-7">
-								<input type="text" name="street" id="street" class="form-control input-sm" autocomplete="on"/>
+								<input type="text" name="street" id="street" class="form-control input-sm" ${stateAddress} autocomplete="on"/>
 							</div>
 						</div>
 					</div>
@@ -164,7 +173,7 @@ $(document).ready(function(){
 						<div class="form-group col-md-12">
 							<label class="col-md-2 control-lable" for="file">City</label>
 							<div class="col-md-7">
-								<input type="text" name="city" id="city" class="form-control input-sm" autocomplete="on" />
+								<input type="text" name="city" id="city" class="form-control input-sm"  ${stateAddress} autocomplete="on" />
 							</div>
 						</div>
 					</div>
@@ -173,7 +182,7 @@ $(document).ready(function(){
 						<div class="form-group col-md-12">
 							<label class="col-md-2 control-lable" for="file">State</label>
 							<div class="col-md-7">
-								<input type="text" name="state" id="state" class="form-control input-sm" autocomplete="on" />
+								<input type="text" name="state" id="state" class="form-control input-sm"  ${stateAddress} autocomplete="on" />
 							</div>
 						</div>
 					</div>
@@ -182,13 +191,26 @@ $(document).ready(function(){
 						<div class="form-group col-md-12">
 							<label class="col-md-2 control-lable" for="file">Zip Code</label>
 							<div class="col-md-7">
-								<input type="text" name="zip" id="zip" class="form-control input-sm"  autocomplete="on"/>
+								<input type="text" name="zip" id="zip" class="form-control input-sm"   ${stateAddress}autocomplete="on"/>
 							</div>
 						</div>
 					</div>
 
 
+					<div class="row">
+						<div class="form-group col-md-12">
+							<label class="col-md-2 control-lable" for="file">Gender</label>
+							<div class="col-md-7">
+								<input type="radio" name="gender" value="male" id="male" ${stateOthers } /> Male
+								<input type="radio" name="gender" value="female" id="female" ${stateOthers } />Female
+							</div>
+						</div>
+					</div>
+
 					<c:choose>
+						<c:when test="${param.addAddress == 'true'}">
+							<button name="${param.name}" id="addaddress" class="submitform">Add Address</button>
+						</c:when>
 						<c:when test="${!empty param.name}">
 							<button name="${param.name}" id="update" class="submitform">Update</button>
 						</c:when>
@@ -197,12 +219,13 @@ $(document).ready(function(){
 						</c:otherwise>
 					</c:choose>
 
+
 				</form>
 
 
 			</div>
 		</div>
 	</div>
-	<a href="/SampleWebApp/listUsers.jsp">List Users</a>
+	<a href="/SampleJPAJMS/listUsers.jsp">List Users</a>
 </body>
 </html>

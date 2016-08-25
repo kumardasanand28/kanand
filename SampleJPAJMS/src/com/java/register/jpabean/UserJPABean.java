@@ -2,7 +2,9 @@ package com.java.register.jpabean;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,6 +21,7 @@ public class UserJPABean {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="USER_ID")
 	private long id;
 
 	@Column(name="FULL_NAME")
@@ -30,8 +33,17 @@ public class UserJPABean {
 	@Column(name="GENDER")
 	private String gender;
 
-	@Column(name="INTERESTS")
-	private String interests;
+
+	@Column(name="PASSED_YEAR")
+	private int passedYear;
+	
+	@Column(name="QUALIFICATION")
+	private String qualification;
+	
+	
+	
+	@OneToMany(mappedBy="user", cascade = CascadeType.ALL, targetEntity=AddressJPABean.class)
+	private Collection<AddressJPABean> addressList;
 	
 
 	public long getId() {
@@ -67,12 +79,28 @@ public class UserJPABean {
 		this.gender = gender;
 	}
 
-	public String getInterests() {
-		return interests;
+	public Collection<AddressJPABean> getAddressList() {
+		return addressList;
 	}
 
-	public void setInterests(String interests) {
-		this.interests = interests;
+	public void setAddressList(Collection<AddressJPABean> addressList) {
+		this.addressList = addressList;
+	}
+
+	public int getPassedYear() {
+		return passedYear;
+	}
+
+	public void setPassedYear(int passedYear) {
+		this.passedYear = passedYear;
+	}
+
+	public String getQualification() {
+		return qualification;
+	}
+
+	public void setQualification(String qualification) {
+		this.qualification = qualification;
 	}
 
 }
