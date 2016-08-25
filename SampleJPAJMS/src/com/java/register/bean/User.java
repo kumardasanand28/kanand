@@ -18,6 +18,8 @@ public class User {
 	
 	private String gender;
 	
+	private List<String> projectName;
+	
 
 	private List<Address> addressList;
 	
@@ -104,6 +106,14 @@ public class User {
 
 	public void setAddressAsText(String addressAsText) {
 		this.addressAsText = addressAsText;
+	}
+
+	public List<String> getProjectName() {
+		return projectName;
+	}
+
+	public void setProjectName(List<String> projectName) {
+		this.projectName = projectName;
 	}
 	
 

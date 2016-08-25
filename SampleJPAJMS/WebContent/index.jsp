@@ -195,6 +195,15 @@ $(document).ready(function(){
 							</div>
 						</div>
 					</div>
+					
+					<div class="row">
+						<div class="form-group col-md-12">
+							<label class="col-md-2 control-lable" for="file">Project Name to be Mapped(Comma Separated)</label>
+							<div class="col-md-7">
+								<input type="text" name="project" id="project" class="form-control input-sm" autocomplete="on"/>
+							</div>
+						</div>
+					</div>
 
 
 					<div class="row">

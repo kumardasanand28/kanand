@@ -5,6 +5,7 @@ package com.java.register.servlet;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -110,6 +111,11 @@ public class UserRegisterServlet  extends HttpServlet{
 			user.setQualification(request.getParameter(UserConstants.QUALIFICATION));
 			user.setYearPassed(Integer.parseInt(request.getParameter(UserConstants.YEAR_PASSED)));
 			user.setGender(request.getParameter(UserConstants.GENDER));
+		}
+		String projectNames = request.getParameter("project");
+		if(!StringUtils.isNullOrEmpty(projectNames)){
+			String[] projectNameArray = projectNames.split(",");
+			user.setProjectName(Arrays.asList(projectNameArray));
 		}
 		List<Address> addressList = new ArrayList<Address>();
 		Address address = new Address();

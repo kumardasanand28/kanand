@@ -1,7 +1,9 @@
 package com.java.register.service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -12,6 +14,7 @@ import com.java.register.bean.Address;
 import com.java.register.bean.User;
 import com.java.register.jpabean.AddressDetailsJPA;
 import com.java.register.jpabean.AddressJPABean;
+import com.java.register.jpabean.ProjectJPA;
 import com.java.register.jpabean.UserJPABean;
 
 
@@ -116,29 +119,47 @@ public class UserService {
 		AddressDetailsJPA details = new AddressDetailsJPA();
 		AddressJPABean address = new AddressJPABean();
 
+		//user details
 		userBean.setFullName(user.getFullName());
 		userBean.setAge(user.getAge());
 		userBean.setGender(user.getGender());
 		userBean.setPassedYear(user.getYearPassed());
 		userBean.setQualification(user.getQualification());
+		
+		//address details
 		address.setAddressNickName(user.getAddressList().get(0).getAddressNickName());
-
 		details.setStreet(user.getAddressList().get(0).getStreet());
 		details.setCity(user.getAddressList().get(0).getCity());
 		details.setState(user.getAddressList().get(0).getState());
 		details.setZip(user.getAddressList().get(0).getZip());
 
+		
+		
 		EntityManager em = createEntityManager();
 		em.getTransaction().begin();
+		
+		List<String> projectList = user.getProjectName();
+		Set<ProjectJPA> proJpaList = new HashSet<ProjectJPA>();
+		ProjectJPA pJpa = new ProjectJPA();
+		for(String project : projectList){
+			
+			pJpa.setProjectName(project);
+			proJpaList.add(pJpa);
+			em.persist(pJpa);
+			//em.clear();
+		}
+		userBean.setProject(proJpaList);
 		em.persist(userBean);
-
+		em.persist(pJpa);
+		
 		details.setAddress(address);
 		em.persist(details);
 
 		address.setUser(userBean);
 		em.persist(address);
 
-
+		
+		
 		em.getTransaction().commit();
 		em.close();
 
