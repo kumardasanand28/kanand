@@ -2,7 +2,6 @@ package com.java.register.jpabean;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -11,6 +10,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -43,7 +44,10 @@ public class UserJPABean {
 	private String qualification;
 	
 	
-	@ManyToMany(mappedBy="users",cascade=CascadeType.ALL)
+	@OneToMany(cascade=CascadeType.ALL)
+	@JoinTable(name = "USER_PROJECT", 
+	joinColumns = @JoinColumn(name = "USER_ID",referencedColumnName="USER_ID"),
+	inverseJoinColumns = @JoinColumn(name = "PROJECT_ID",referencedColumnName="PROJECT_ID"))
 	private Set<ProjectJPA> project = new HashSet<ProjectJPA>();
 	
 	

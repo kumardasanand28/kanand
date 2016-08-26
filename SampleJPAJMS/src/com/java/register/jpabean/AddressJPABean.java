@@ -1,5 +1,6 @@
 package com.java.register.jpabean;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -26,11 +27,11 @@ public class AddressJPABean {
 
 
 
-	@ManyToOne
+	@ManyToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="USER_ID", referencedColumnName="USER_ID")
 	private UserJPABean user; 
 
-	@OneToOne(mappedBy = "address")
+	@OneToOne(mappedBy = "address",cascade=CascadeType.ALL)
 	private AddressDetailsJPA addressDetails;
 
 

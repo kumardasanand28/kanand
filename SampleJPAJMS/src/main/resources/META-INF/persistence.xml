@@ -6,12 +6,16 @@
 	<provider>org.hibernate.ejb.HibernatePersistence</provider>
 		<class>com.java.register.jpabean.AddressJPABean</class>
 		<class>com.java.register.jpabean.AddressDetailsJPA</class>
+		<class>com.java.register.jpabean.UserJPABean</class>
+		<class>com.java.register.jpabean.AddressDetailsJPA</class>
+		<class>com.java.register.jpabean.ProjectJPA</class>
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
 			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/mycompany" />
 			<property name="javax.persistence.jdbc.user" value="root" />
 			<property name="javax.persistence.jdbc.password" value="admin" />
-            <property name = "hibernate.show_sql" value = "true" />
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.format_sql" value="true"/>
 		</properties>
 	</persistence-unit>
 </persistence>

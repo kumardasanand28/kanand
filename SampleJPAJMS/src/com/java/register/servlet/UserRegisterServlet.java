@@ -79,16 +79,23 @@ public class UserRegisterServlet  extends HttpServlet{
 		}else if (action != null && action.equalsIgnoreCase("addaddress")){
 			User user = new User();
 			response.setContentType("text/html;charset=UTF-8");
-				populateUserDetails(request, user,true);
-				user.setId(Integer.parseInt(name));
-				try {
-					userService.addAddress(user);
-					response.getWriter().write("SuccessFully Added Address");
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-					response.getWriter().write("Address Addition failed");
-				}
+			populateUserDetails(request, user,true);
+			user.setId(Integer.parseInt(name));
+			try {
+				userService.addAddress(user);
+				response.getWriter().write("SuccessFully Added Address");
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				response.getWriter().write("Address Addition failed");
+			}
+		}else if(action != null && action.equalsIgnoreCase("deleteUser")){
+			try {
+				userService.deleteUser(name);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 
 	}

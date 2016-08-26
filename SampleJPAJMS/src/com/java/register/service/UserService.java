@@ -2,6 +2,7 @@ package com.java.register.service;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -16,6 +17,7 @@ import com.java.register.jpabean.AddressDetailsJPA;
 import com.java.register.jpabean.AddressJPABean;
 import com.java.register.jpabean.ProjectJPA;
 import com.java.register.jpabean.UserJPABean;
+import com.mysql.jdbc.StringUtils;
 
 
 
@@ -84,10 +86,34 @@ public class UserService {
 
 	}
 
+
+
+	private ProjectJPA findProject(String projectId){
+		String query = "SELECT u FROM ProjectJPA u where u.projectName= :projectId";
+		EntityManager entitymanager = createEntityManager();
+		Query jpaQuery = entitymanager.createQuery(query,ProjectJPA.class).setParameter("projectId", projectId);
+		List<ProjectJPA> projJPA = (List<ProjectJPA>) jpaQuery.getResultList();
+		if(!projJPA.isEmpty()){
+			return projJPA.get(0);
+		}else{
+			return null;
+		}
+
+	}
+
 	private EntityManager createEntityManager() {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("persistenceUnit");
 		EntityManager em = emf.createEntityManager();
 		return em;
+	}
+
+	public void deleteUser(String userId){
+		EntityManager em = createEntityManager();
+		UserJPABean jpaBean = em.find(UserJPABean.class, Long.parseLong(userId));
+		em.getTransaction().begin();
+		em.remove(jpaBean);
+		em.getTransaction().commit();
+		em.close();
 	}
 
 	public void updateUser(User user) throws Exception {
@@ -101,6 +127,35 @@ public class UserService {
 		jpaBean.setGender(user.getGender());
 		jpaBean.setPassedYear(user.getYearPassed());
 		jpaBean.setQualification(user.getQualification());
+
+		Set<ProjectJPA> newProjectsMapped = new HashSet<ProjectJPA>();
+		Set<ProjectJPA> projectsMapped = jpaBean.getProject();
+		Iterator iterator = projectsMapped.iterator(); 
+		while (iterator.hasNext()){
+			ProjectJPA projJpa = (ProjectJPA) iterator.next();
+			List<String> projectList = user.getProjectName();
+			projJpa.setProjectName(projectList.get(0));
+			newProjectsMapped.add(projJpa);
+			break;
+		}
+		jpaBean.setProject(newProjectsMapped);
+
+		List<Address> newAddressList = user.getAddressList();
+		List<AddressJPABean> addressJpa = (List<AddressJPABean>) jpaBean.getAddressList();
+		for(AddressJPABean address : addressJpa){
+			Address newAddress = newAddressList.get(0);
+			address.setAddressNickName(newAddress.getAddressNickName());
+			AddressDetailsJPA detailsJpa = address.getAddressDetails();
+			detailsJpa.setStreet(newAddress.getStreet());
+			detailsJpa.setCity(newAddress.getCity());
+			detailsJpa.setState(newAddress.getState());
+			detailsJpa.setZip(newAddress.getZip());
+			em.persist(detailsJpa);
+			address.setAddressDetails(detailsJpa);
+			em.persist(address);
+
+		}
+
 
 		em.persist(jpaBean);
 		em.getTransaction().commit();
@@ -125,7 +180,7 @@ public class UserService {
 		userBean.setGender(user.getGender());
 		userBean.setPassedYear(user.getYearPassed());
 		userBean.setQualification(user.getQualification());
-		
+
 		//address details
 		address.setAddressNickName(user.getAddressList().get(0).getAddressNickName());
 		details.setStreet(user.getAddressList().get(0).getStreet());
@@ -133,48 +188,52 @@ public class UserService {
 		details.setState(user.getAddressList().get(0).getState());
 		details.setZip(user.getAddressList().get(0).getZip());
 
-		
-		
+
+
 		EntityManager em = createEntityManager();
 		em.getTransaction().begin();
-		
+
 		List<String> projectList = user.getProjectName();
-		Set<ProjectJPA> proJpaList = new HashSet<ProjectJPA>();
-		ProjectJPA pJpa = new ProjectJPA();
-		for(String project : projectList){
-			
-			pJpa.setProjectName(project);
-			proJpaList.add(pJpa);
+
+
+
+		ProjectJPA pJpa = null;
+		Set<ProjectJPA> project = new HashSet<ProjectJPA>();
+		for(String proj : projectList){
+			pJpa = new ProjectJPA();
+			pJpa.setProjectName(proj);
+			project.add(pJpa);
 			em.persist(pJpa);
-			//em.clear();
 		}
-		userBean.setProject(proJpaList);
-		em.persist(userBean);
-		em.persist(pJpa);
-		
+
+
+
 		details.setAddress(address);
 		em.persist(details);
 
 		address.setUser(userBean);
 		em.persist(address);
 
-		
-		
+
+		userBean.setProject(project);
+		em.persist(userBean);
+
+
 		em.getTransaction().commit();
 		em.close();
 
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
+
+
+
 	private List<User> copyToUserBean(List<UserJPABean> userList) {
 		List<User> list = new ArrayList<User>();
 		User user = null;
@@ -187,6 +246,13 @@ public class UserService {
 			user.setGender(bean.getGender());
 			user.setQualification(bean.getQualification());
 			user.setYearPassed(bean.getPassedYear());
+			Set<ProjectJPA> proj = bean.getProject();
+			Iterator iterator = proj.iterator(); 
+			List<String> listProj = new ArrayList<String>();
+			while (iterator.hasNext()){
+				listProj.add(((ProjectJPA)iterator.next()).getProjectName());
+			}
+			user.setProjectName(listProj);
 			List<AddressJPABean> addressList = (List<AddressJPABean>) bean.getAddressList();
 			List<Address> addressUserList = new ArrayList<Address>();
 			for(AddressJPABean addressJpa : addressList){

@@ -65,6 +65,7 @@ $(document).ready(function(){
 					$('#age').val(responseJson.age);
 					$('#qual').val(responseJson.qualification);
 					$('#yop').val(responseJson.yearPassed);
+					$('#project').val(responseJson.projectName[0]);
 					if(addAddress == 'false'){
 						$('#aNickName').val(responseJson.addressList[0].addressNickName);
 						$('#street').val(responseJson.addressList[0].street);
@@ -155,7 +156,7 @@ $(document).ready(function(){
 							<label class="col-md-2 control-lable" for="file">Address Nick Name</label>
 							<div class="col-md-7">
 								<input type="text" name="aNickName" id="aNickName"
-									class="form-control input-sm"  autocomplete="on" ${stateAddress}/>
+									class="form-control input-sm"  autocomplete="on"/>
 							</div>
 						</div>
 					</div>
@@ -164,7 +165,7 @@ $(document).ready(function(){
 						<div class="form-group col-md-12">
 							<label class="col-md-2 control-lable" for="file">Street</label>
 							<div class="col-md-7">
-								<input type="text" name="street" id="street" class="form-control input-sm" ${stateAddress} autocomplete="on"/>
+								<input type="text" name="street" id="street" class="form-control input-sm"  autocomplete="on"/>
 							</div>
 						</div>
 					</div>
@@ -173,7 +174,7 @@ $(document).ready(function(){
 						<div class="form-group col-md-12">
 							<label class="col-md-2 control-lable" for="file">City</label>
 							<div class="col-md-7">
-								<input type="text" name="city" id="city" class="form-control input-sm"  ${stateAddress} autocomplete="on" />
+								<input type="text" name="city" id="city" class="form-control input-sm"   autocomplete="on" />
 							</div>
 						</div>
 					</div>
@@ -182,7 +183,7 @@ $(document).ready(function(){
 						<div class="form-group col-md-12">
 							<label class="col-md-2 control-lable" for="file">State</label>
 							<div class="col-md-7">
-								<input type="text" name="state" id="state" class="form-control input-sm"  ${stateAddress} autocomplete="on" />
+								<input type="text" name="state" id="state" class="form-control input-sm" autocomplete="on" />
 							</div>
 						</div>
 					</div>
@@ -191,16 +192,16 @@ $(document).ready(function(){
 						<div class="form-group col-md-12">
 							<label class="col-md-2 control-lable" for="file">Zip Code</label>
 							<div class="col-md-7">
-								<input type="text" name="zip" id="zip" class="form-control input-sm"   ${stateAddress}autocomplete="on"/>
+								<input type="text" name="zip" id="zip" class="form-control input-sm"  autocomplete="on"/>
 							</div>
 						</div>
 					</div>
 					
 					<div class="row">
 						<div class="form-group col-md-12">
-							<label class="col-md-2 control-lable" for="file">Project Name to be Mapped(Comma Separated)</label>
+							<label class="col-md-2 control-lable" for="file">Project Name to be Mapped</label>
 							<div class="col-md-7">
-								<input type="text" name="project" id="project" class="form-control input-sm" autocomplete="on"/>
+								<input type="text" name="project" id="project" class="form-control input-sm"  ${stateOthers }  autocomplete="on"/>
 							</div>
 						</div>
 					</div>

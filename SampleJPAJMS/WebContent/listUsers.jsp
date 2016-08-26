@@ -3,6 +3,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
 <link src="css/app.css"  rel="stylesheet"></link>
@@ -12,15 +13,16 @@
 </head>
 
 <style>
-div.ex {
-	text-align: right width:300px;
-	padding: 10px;
-	border: 5px solid grey;
-	margin: 0px
+div.result {
+  color: red;
 }
 </style>
 
 <body>
+<c:if test="${param.removedSuccess == 'true'}">
+<c:set var="stateAddress" value="disabled"></c:set>
+</c:if>
+
 
 <script type="text/javascript">
 
@@ -69,6 +71,15 @@ $( document ).ready(function() {
 				window.location.href = '/SampleJPAJMS?name='+name+"&addAddress=false"; 
 			}else if(id == 'Addaddress'){
 				window.location.href = '/SampleJPAJMS?name='+name+"&addAddress=true"; 
+			}else if(id == 'deleteUser'){
+				$.ajax({
+					type: "POST",
+					url: "register?action=deleteUser&name="+name, 
+					success: function(msg){
+						window.location.href = '/SampleJPAJMS/listUsers.jsp?removedSuccess=true'; 
+					},
+				});
+			
 			}
 		});
 	</script>
@@ -78,6 +89,11 @@ $( document ).ready(function() {
 		<div class="panel-heading">
 			<span class="lead">List of Users </span>
 		</div>
+		<c:if test="${param.removedSuccess == 'true'}">
+			<div id="result"><font size="3" color="green">SUCCESSFULLY REMOVED !!!</font></div>
+		</c:if>
+
+
 		<div class="tablecontainer">
 		<table class="table" id="result">
 		</table>
