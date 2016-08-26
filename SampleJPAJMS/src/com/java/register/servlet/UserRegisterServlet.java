@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.java.register.servlet;
 
 import java.io.IOException;
@@ -46,8 +43,8 @@ public class UserRegisterServlet  extends HttpServlet{
 		if (action != null && action.equalsIgnoreCase("register")) {
 			User user = new User();
 			response.setContentType("text/html;charset=UTF-8");
-			boolean isValid = validateUserDetails(request);
-			if (isValid) {
+			//boolean isValid = validateUserDetails(request);
+			if (true) {
 				populateUserDetails(request, user,false);
 				try {
 					userService.insertIntoDataBase(user);
@@ -114,9 +111,9 @@ public class UserRegisterServlet  extends HttpServlet{
 
 		if(!populateOnlAddress){
 			user.setFullName(request.getParameter(UserConstants.FULL_NAME));
-			user.setAge(Integer.parseInt(request.getParameter(UserConstants.AGE)));
+			user.setAge(request.getParameter(UserConstants.AGE));
 			user.setQualification(request.getParameter(UserConstants.QUALIFICATION));
-			user.setYearPassed(Integer.parseInt(request.getParameter(UserConstants.YEAR_PASSED)));
+			user.setYearPassed(request.getParameter(UserConstants.YEAR_PASSED));
 			user.setGender(request.getParameter(UserConstants.GENDER));
 		}
 		String projectNames = request.getParameter("project");
@@ -166,7 +163,6 @@ public class UserRegisterServlet  extends HttpServlet{
 		return true;
 
 	}
-
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {

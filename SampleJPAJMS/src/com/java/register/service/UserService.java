@@ -10,9 +10,12 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 
 import com.java.register.bean.Address;
 import com.java.register.bean.User;
+import com.java.register.exception.EntityValidationException;
 import com.java.register.jpabean.AddressDetailsJPA;
 import com.java.register.jpabean.AddressJPABean;
 import com.java.register.jpabean.ProjectJPA;
@@ -165,21 +168,28 @@ public class UserService {
 
 
 	public void insertIntoDataBase(User user) throws Exception {
-		persistUserData(user);
+		try{
+			persistUserData(user);
+		}
+		catch (ConstraintViolationException e) {
+			Set<ConstraintViolation<?>> violationsSet =  e.getConstraintViolations();
+			Iterator iterator = violationsSet.iterator(); 
+			while(iterator.hasNext()){
+				ConstraintViolation<?> violation = e.getConstraintViolations().iterator().next();
+				new EntityValidationException(violation.getMessageTemplate(),violation.getPropertyPath().toString());
+			}
+			throw e;
+	
+			/*assertEquals("name", violation.getPropertyPath().toString());
+			assertEquals(Size.class, violation.getConstraintDescriptor().getAnnotation().annotationType());*/
+		}
 	}
 
 	private void persistUserData(User user) {
 
-		UserJPABean userBean = new UserJPABean();
+		UserJPABean userBean = new UserJPABean(user.getFullName(),user.getAge(),user.getGender(),user.getYearPassed(),user.getQualification());
 		AddressDetailsJPA details = new AddressDetailsJPA();
 		AddressJPABean address = new AddressJPABean();
-
-		//user details
-		userBean.setFullName(user.getFullName());
-		userBean.setAge(user.getAge());
-		userBean.setGender(user.getGender());
-		userBean.setPassedYear(user.getYearPassed());
-		userBean.setQualification(user.getQualification());
 
 		//address details
 		address.setAddressNickName(user.getAddressList().get(0).getAddressNickName());
@@ -242,10 +252,10 @@ public class UserService {
 			user = new User();
 			user.setId(bean.getId());
 			user.setFullName(bean.getFullName());
-			user.setAge(bean.getAge());
+			user.setAge(String.valueOf(bean.getAge()));
 			user.setGender(bean.getGender());
 			user.setQualification(bean.getQualification());
-			user.setYearPassed(bean.getPassedYear());
+			user.setYearPassed(String.valueOf(bean.getPassedYear()));
 			Set<ProjectJPA> proj = bean.getProject();
 			Iterator iterator = proj.iterator(); 
 			List<String> listProj = new ArrayList<String>();

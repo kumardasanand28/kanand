@@ -107,7 +107,8 @@ $(document).ready(function(){
 			<div class="formcontainer">
 
 
-				<form id="register" action="UserRegisterServlet" method="POST">
+				<form id="register" action="register" method="post">
+
 
 					<div class="row">
 						<div class="form-group col-md-12">

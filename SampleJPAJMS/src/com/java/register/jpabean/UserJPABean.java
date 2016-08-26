@@ -12,9 +12,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name="USERS")
@@ -28,20 +30,40 @@ public class UserJPABean {
 	private long id;
 
 	@Column(name="FULL_NAME")
+	@NotNull
+	@Size(max=30,min=3,message="Invalid Name")
 	private String fullName;
 
 	@Column(name="AGE")
+	@NotNull
+	@Digits(integer=3, fraction = 0,message="Invalid Age")
 	private int age;
 
 	@Column(name="GENDER")
+	@NotNull
 	private String gender;
 
-
+	@NotNull
+	@Digits(integer=4, fraction = 0,message="Invalid Year")
 	@Column(name="PASSED_YEAR")
 	private int passedYear;
 	
+	@NotNull
 	@Column(name="QUALIFICATION")
 	private String qualification;
+	
+	
+	public UserJPABean(String name, int age,String gender,int passedYear,String qualification){
+		this.fullName = name;
+		this.age = age;
+		this.gender = gender;
+		this.passedYear = passedYear;
+		this.qualification = qualification;
+	}
+	
+	public UserJPABean(){
+		
+	}
 	
 	
 	@OneToMany(cascade=CascadeType.ALL)
