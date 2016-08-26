@@ -3,6 +3,8 @@ package com.java.register.bean;
 import java.util.List;
 import java.util.Map;
 
+import com.java.register.constants.UserConstants;
+
 public class User {
 
 	
@@ -10,11 +12,11 @@ public class User {
 	
 	private String fullName;
 	
-	private int age;
+	private String age;
 	
 	private String qualification;
 	
-	private int yearPassed;
+	private String yearPassed;
 	
 	private String gender;
 	
@@ -35,10 +37,10 @@ public class User {
 	}
 
 	public int getAge() {
-		return age;
+		return Integer.parseInt(age);
 	}
 
-	public void setAge(int age) {
+	public void setAge(String age) {
 		this.age = age;
 	}
 
@@ -51,10 +53,10 @@ public class User {
 	}
 
 	public int getYearPassed() {
-		return yearPassed;
+		return Integer.parseInt(yearPassed);
 	}
 
-	public void setYearPassed(int yearPassed) {
+	public void setYearPassed(String yearPassed) {
 		this.yearPassed = yearPassed;
 	}
 
