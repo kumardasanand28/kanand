@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.session.MyFirstSessionBeanRemote;
-import com.sun.xml.ws.util.StringUtils;
 
 /**
  * Servlet implementation class MyTestServlet
@@ -46,6 +45,8 @@ public class MyTestServlet extends HttpServlet {
 			MyFirstSessionBeanRemote bean = (MyFirstSessionBeanRemote) ctx.lookup("java:global/Sample/MyEJB/MyFirstSessionBean!com.session.MyFirstSessionBeanRemote");
 			PrintWriter out = response.getWriter();
 			bean.add("Anand Test MyFirstSessionBean"); 
+			out.print("MyFirstSessionBean1 : @Stateless  |||| adding ");
+			response.getWriter().append("\n");
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -58,23 +59,24 @@ public class MyTestServlet extends HttpServlet {
 			MyFirstSessionBeanRemote bean = (MyFirstSessionBeanRemote) ctx.lookup("java:global/Sample/MyEJB/MyFirstSessionBean!com.session.MyFirstSessionBeanRemote");
 			PrintWriter out = response.getWriter();
 			List<String> list = bean.get();
-			out.print("MyFirstSessionBean : @Stateless");
+			out.print("MyFirstSessionBean2 : @Stateless ||| printing");
+			response.getWriter().append("\n");
 			if(!list.isEmpty()){
 				out.println(list.get(0));
 			}else{
 				out.println("Nothing in the list");
 			}
 			out.println(bean.test());
+			out.print("MyFirstSessionBean2 : @Stateless  |||| completed ");
+			response.getWriter().append("\n");
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
 
-
-		
-		
-		
-		
-		
+		response.getWriter().append("***********************************************************************");
+		response.getWriter().append("***********************************************************************");
+		response.getWriter().append("***********************************************************************");
+		response.getWriter().append("\n");
 		
 		
 		
@@ -88,6 +90,8 @@ public class MyTestServlet extends HttpServlet {
 			MyFirstSessionBeanRemote bean = (MyFirstSessionBeanRemote) ctx.lookup("java:global/Sample/MyEJB/MyStateFullSessionBean!com.session.MyFirstSessionBeanRemote");
 			PrintWriter out = response.getWriter();
 			bean.add("Anand Test MyStateFullSessionBean"); 
+			out.print("MyStateFullSessionBean : @Stateful || adding");
+			response.getWriter().append("\n");
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -100,23 +104,20 @@ public class MyTestServlet extends HttpServlet {
 			MyFirstSessionBeanRemote bean = (MyFirstSessionBeanRemote) ctx.lookup("java:global/Sample/MyEJB/MyStateFullSessionBean!com.session.MyFirstSessionBeanRemote");
 			PrintWriter out = response.getWriter();
 			List<String> list = bean.get();
-			out.print("MyStateFullSessionBean : @Stateful");
+			out.print("MyStateFullSessionBean : @Stateful || printing");
+			response.getWriter().append("\n");
 			if(!list.isEmpty()){
 				out.println(list.get(0));
 			}else{
 				out.println("Nothing in the list");
 			}
 			out.println(bean.test());
+			out.print("MyStateFullSessionBean : @Stateful || completed");
+			response.getWriter().append("\n");
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		
-		
-		
-		
-		
-		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
 	/**
