@@ -71,7 +71,8 @@ public class UserDataServlet extends HttpServlet {
 	}
 
 	private void postMessage(HttpServletResponse response) throws IOException {
-		
+	
+		QueueConnection connection = null;
 		
 		try {
 			Context context = getInitialContext();
@@ -79,7 +80,7 @@ public class UserDataServlet extends HttpServlet {
 			QueueConnectionFactory factory
 			= (QueueConnectionFactory) context.lookup("ConnectionFactory");
 
-			QueueConnection connection = factory.createQueueConnection();
+			connection = factory.createQueueConnection();
 			QueueSession session
 			= connection.createQueueSession(false, QueueSession.AUTO_ACKNOWLEDGE);
 			QueueSender sender = session.createSender(queue);
@@ -95,6 +96,16 @@ public class UserDataServlet extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			response.getWriter().write("Registration Failed");
+		}finally {
+			if(connection != null){
+				try {
+					connection.close();
+				} catch (JMSException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
 		}
 	}
 	
