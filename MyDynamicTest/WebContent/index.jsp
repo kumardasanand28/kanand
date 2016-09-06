@@ -67,8 +67,6 @@ $(document).ready(function(){
 
 	<div id="result"></div>
 	
-	<div id="resultlist"></div>
-
 	<div class="generic-container">
 		<div class="panel panel-default">
 			<div class="panel-heading">
@@ -109,5 +107,7 @@ $(document).ready(function(){
 			</div>
 		</div>
 	</div>
+	
+	<div id="resultlist"></div>
 </body>
 </html>
