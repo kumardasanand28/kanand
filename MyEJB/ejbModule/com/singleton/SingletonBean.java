@@ -25,5 +25,10 @@ public class SingletonBean{
 	public void put(String key,Object value){
 		this.cache.put(key, value);
 	}
+	
+	
+	public HashMap getMap(){
+		return cache;
+	}
 
 }

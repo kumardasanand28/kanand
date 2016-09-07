@@ -11,50 +11,48 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.cdi.stateless.Waiter;
-import com.session.MyFirstSessionBean;
-import com.singleton.SingletonBean;
+import com.stateless.Course;
 
 /**
- * Servlet implementation class MyFirstServlet
+ * Servlet implementation class TestInjectionServlet
  */
-@WebServlet("/MyFirstServlet")
-public class MyFirstServlet extends HttpServlet {
+@WebServlet("/TestInjectionServlet")
+public class TestInjectionServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
-	/**
-	 * Default constructor. 
-	 */
-	public MyFirstServlet() {
-		// TODO Auto-generated constructor stub
-	}
-
-	@EJB(mappedName = "java:global/Sample/MyEJB/MyFirstSessionBean!com.session.MyFirstSessionBean")
-	MyFirstSessionBean bean;
-
-	@EJB
-	SingletonBean sBean;
 	
+	@EJB
+	private Course course;
 	
 	@EJB
 	private Waiter waiter;
 	
 	@EJB
 	private com.cdi.stateless.applicationscope.WaiterApScope waiterApp;
-
-	@Override
-	public void init(){
-		sBean.put("name", "Hello World");
-	}
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public TestInjectionServlet() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		PrintWriter out = response.getWriter();
-		out.println(bean.test());  
-		out.println(sBean.get("name"));  
+		//testing CDI inject
+		out.println(course.testCourseStateless());  
+		
+		
+		//testing CDI request  scope
+		out.println("CDI request  scope :  "+waiter.orderSoup("chicken soup"));  
 		out.println("CDI request  scope :  "+waiter.orderWhatTheOtherGuyHad());  
+		
+		
+		//testing CDI application scope
+		out.println("CDI application scope :  "+waiterApp.orderSoup("Sweet corn soup")); 
 		out.println("CDI application scope  : "+waiterApp.orderWhatTheOtherGuyHad()); 
 	}
 
@@ -63,7 +61,6 @@ public class MyFirstServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		doGet(request, response);
 	}
 
 }

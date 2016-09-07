@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateful;
+import javax.faces.bean.SessionScoped;
 
 /**
  * Session Bean implementation class MyStateFullSessionBean
