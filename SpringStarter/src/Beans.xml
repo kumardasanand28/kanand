@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+
+	<bean id="helloWorld" class="com.test.HelloWorld" scope="singleton"
+		init-method="init" destroy-method="destroy">
+		<property name="message1" value="Hello Second World!" />
+	</bean>
+
+	<bean id="helloIndia" class="com.test.HelloIndia" parent="helloWorld">
+		<property name="message2" value="Hello India!" />
+		<property name="message3" value="Namaste India!" />
+	</bean>
+
+	<bean id="textEditor" class="com.TextEditor">
+		<property name="spellChecker">
+			<bean id="spellChecker" class="com.SpellChecker" />
+		</property>
+		<property name="addressList">
+			<list>
+				<ref bean="helloWorld" />
+				<value>INDIA</value>
+				<value>Pakistan</value>
+				<value>USA</value>
+				<value>USA</value>
+			</list>
+		</property>
+		<property name="addressSet">
+			<set>
+				<value>INDIA</value>
+				<value>Pakistan</value>
+				<value>USA</value>
+				<value>USA</value>
+			</set>
+		</property>
+		<property name="addressMap">
+			<map>
+				<entry key="1" value-ref="helloWorld" />
+				<entry key="2" value="Pakistan" />
+				<entry key="3" value="USA" />
+				<entry key="4" value="USA" />
+			</map>
+		</property>
+		<property name="addressProp">
+			<props>
+				<prop key="one">INDIA</prop>
+				<prop key="two">Pakistan</prop>
+				<prop key="three">USA</prop>
+				<prop key="four">USA</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://localhost:3306/mycompany" />
+		<property name="username" value="root" />
+		<property name="password" value="admin" />
+	</bean>
+	
+	 <bean id="studentJDBCTemplate" class="com.student.dao.impl.StudentJDBCTemplate">
+      <property name="dataSource"  ref="dataSource" />    
+   </bean>
+
+	<!-- <bean class="com.test.InitHello"></bean> -->
+
+</beans>
