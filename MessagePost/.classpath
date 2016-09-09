@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" output="target/classes" path="src">
+		<attributes>
+			<attribute name="optional" value="true"/>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/EJBMessageSend"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry exported="true" kind="lib" path="D:/jboss/wildfly-10.1.0.Final/bin/client/jboss-client.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/203328/.m2/repository/org/mortbay/jetty/jetty-naming/6.1.26/jetty-naming-6.1.26.jar">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+			<attribute name="org.eclipse.jst.component.archivename" value="jetty-naming-6.1.26.jar"/>
+			<attribute name="maven.groupId" value="org.mortbay.jetty"/>
+			<attribute name="maven.artifactId" value="jetty-naming"/>
+			<attribute name="maven.version" value="6.1.26"/>
+			<attribute name="maven.scope" value="compile"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry exported="true" kind="lib" path="D:/jboss/wildfly-10.1.0.Final/jboss-modules.jar"/>
+	<classpathentry kind="output" path="target/classes"/>
+</classpath>

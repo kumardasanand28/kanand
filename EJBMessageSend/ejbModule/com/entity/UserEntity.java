@@ -25,13 +25,13 @@ public class UserEntity {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	public long id;
+	private long id;
 
 	@Column(name="FULL_NAME")
-	public String name;
+	private String name;
 
 	@Column(name="EMP_ID")
-	public String empId;
+	private String empId;
 
 	public long getId() {
 		return id;

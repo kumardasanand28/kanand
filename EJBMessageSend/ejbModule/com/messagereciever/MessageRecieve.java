@@ -14,13 +14,14 @@ import javax.jms.ObjectMessage;
 
 import com.entity.UserEntity;
 import com.stateful.UserStateFul;
+import com.stateful.UserStateFullBean;
 
 /**
  * Message-Driven Bean implementation class for: MessageRecieve
  */
-@MessageDriven(mappedName = "NameQueue", activationConfig = {
+@MessageDriven(mappedName = "NameQueue",name="Name Queue" ,description="Message Listener for recieving the registration details", activationConfig = {
 		@ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Queue"),
-		@ActivationConfigProperty(propertyName = "destination",propertyValue = "/queue/NameQueue")
+		@ActivationConfigProperty(propertyName = "destination",propertyValue = "${NAME_QUEUE_NAME}")
 })
 public class MessageRecieve implements MessageListener {
 
@@ -30,6 +31,9 @@ public class MessageRecieve implements MessageListener {
 	
 	@EJB
 	private UserStateFul user;
+	
+	@EJB
+	private UserStateFullBean userBean;
 
 	/**
 	 * Default constructor. 
@@ -49,6 +53,7 @@ public class MessageRecieve implements MessageListener {
 			Map<String,String> namesMap = (Map) objectMessage.getObject();
 			try {
 				user.add(new UserEntity(namesMap.get("name"), namesMap.get("empId")));
+				//userBean.add(new UserEntity(namesMap.get("name"), namesMap.get("empId")));
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

@@ -7,8 +7,7 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.ejb.LocalBean;
-import javax.ejb.Singleton;
+import javax.ejb.Stateless;
 import javax.jms.JMSException;
 import javax.jms.ObjectMessage;
 import javax.jms.Queue;
@@ -19,66 +18,79 @@ import javax.jms.QueueSession;
 import javax.naming.Context;
 import javax.naming.NamingException;
 
+
 /**
  * Session Bean implementation class MessageSender
  */
-@Singleton
-@LocalBean
+@Stateless
 public class MessageSender {
 
+	private Context ctx = null;
 
-	Map<String,String> userNameMap;
+	public void postMessage(String name, String empId) throws Exception {
+		Map<String,String> userNameMap =  new HashMap<String,String>();
 
-	public MessageSender() {
-		userNameMap = new HashMap<String,String>();
-	}
+		System.out.println("Context : "+ctx);
+		userNameMap.put("name", name);
+		userNameMap.put("empId", empId);
 
-	public void addName(String key,String value) {
-		userNameMap.put(key, value);
-	}
-
-	public Map<String,String> getNamesMap() {
-		return userNameMap;
-	}
-
-
-	public void postMessage() {
 		Context context;
+		QueueConnection connection = null;
 		try {
 			context = getInitialContext();
 			Queue queue = (Queue) context.lookup("jms/queue/NameQueue");
 			QueueConnectionFactory factory
 			= (QueueConnectionFactory) context.lookup("ConnectionFactory");
 
-			QueueConnection connection = factory.createQueueConnection();
+			connection = factory.createQueueConnection();
 			QueueSession session
 			= connection.createQueueSession(false, QueueSession.AUTO_ACKNOWLEDGE);
 			QueueSender sender = session.createSender(queue);
 			ObjectMessage objectMessage
 			= session.createObjectMessage();
-			objectMessage.setObject((Serializable) getNamesMap());
+			objectMessage.setObject((Serializable)userNameMap);
 			sender.send(objectMessage);
+			System.out.println("POSTING FROM A @Stateless BEAN");
 
 		} catch (NamingException ex) {
 			Logger.getLogger(MessageSender.class.getName()).log(Level.SEVERE, null, ex);
+			throw ex;
 		} catch (JMSException ex) {
 			Logger.getLogger(MessageSender.class.getName()).log(Level.SEVERE, null, ex);
-		}
+			throw ex;
+		}catch (Exception e) {
+			Logger.getLogger(MessageSender.class.getName()).log(Level.SEVERE, null, e);
+			throw e;
+		}finally {
+			if(connection != null){
+				try {
+					connection.close();
+				} catch (JMSException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 
+		}
 	}
 
-	public static Context getInitialContext()
+	private Context getInitialContext()
 			throws javax.naming.NamingException {
+		if(ctx == null){
+			Properties jndiProperties = new Properties();
+			jndiProperties.put(Context.INITIAL_CONTEXT_FACTORY, "org.jboss.as.naming.InitialContextFactory");
+			jndiProperties.put(Context.URL_PKG_PREFIXES, "org.jboss.ejb.client.naming");
+			jndiProperties.put(Context.PROVIDER_URL, "http-remoting://localhost:8080/");
+			//This property is important for remote resolving
+			jndiProperties.put("jboss.naming.client.ejb.context", true);
+			ctx = new javax.naming.InitialContext(jndiProperties);
+		}
+		return ctx;
+	}
 
-		Properties jndiProperties = new Properties();
-		jndiProperties.put(Context.INITIAL_CONTEXT_FACTORY, "org.jboss.naming.remote.client.InitialContextFactory");
-		jndiProperties.put(Context.URL_PKG_PREFIXES, "org.jboss.ejb.client.naming");
-		jndiProperties.put(Context.PROVIDER_URL, "http-remoting://localhost:8080/");
-		//This property is important for remote resolving
-		jndiProperties.put("jboss.naming.client.ejb.context", true);
-		//This property is not important for remote resolving
-		jndiProperties.put("org.jboss.ejb.client.scoped.context", "true");
-		return new javax.naming.InitialContext(jndiProperties);
+
+	public void setInititalContext(Context context){
+		this.ctx = context;
 	}
 
 }
