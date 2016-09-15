@@ -3,9 +3,7 @@ package com.messagereciever;
 import java.util.Map;
 
 import javax.annotation.Resource;
-import javax.ejb.ActivationConfigProperty;
 import javax.ejb.EJB;
-import javax.ejb.MessageDriven;
 import javax.ejb.MessageDrivenContext;
 import javax.jms.JMSException;
 import javax.jms.Message;
@@ -15,14 +13,7 @@ import javax.jms.ObjectMessage;
 import com.entity.UserEntity;
 import com.stateful.UserStateFul;
 
-/**
- * Message-Driven Bean implementation class for: MessageRecieve
- */
-@MessageDriven(mappedName = "NameQueue",name="Name Queue" ,description="Message Listener for recieving the registration details", activationConfig = {
-		@ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Queue"),
-		@ActivationConfigProperty(propertyName = "destination",propertyValue = "${NAME_QUEUE_NAME}")
-})
-public class MessageRecieve implements MessageListener {
+public class MessageRecieve_EJB {
 
 
 	@Resource
@@ -35,7 +26,7 @@ public class MessageRecieve implements MessageListener {
 	/**
 	 * Default constructor. 
 	 */
-	public MessageRecieve() {
+	public MessageRecieve_EJB() {
 		// TODO Auto-generated constructor stub
 	}
 

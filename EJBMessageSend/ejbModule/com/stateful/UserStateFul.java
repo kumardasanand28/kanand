@@ -1,6 +1,8 @@
 package com.stateful;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.ejb.SessionContext;
@@ -26,13 +28,15 @@ public class UserStateFul {
 	 * Default constructor. 
 	 */
 	public UserStateFul() {
-		// TODO Auto-generated constructor stub
+		nameMap = new HashMap<String,String>();
 	}
 
 	@Resource
 	private SessionContext context;
 	
 	private String testName;
+	
+	private Map<String,String> nameMap;
 	
 	
 	@PersistenceContext(unitName = "user-name", type= PersistenceContextType.TRANSACTION)
@@ -73,6 +77,14 @@ public class UserStateFul {
 
 	public void setTestName(String testName) {
 		this.testName = testName;
+	}
+
+	public Map<String, String> getNameMap() {
+		return nameMap;
+	}
+
+	public void setNameMap(Map<String, String> nameMap) {
+		this.nameMap = nameMap;
 	}
 
 }
