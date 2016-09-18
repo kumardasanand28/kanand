@@ -8,8 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -26,11 +24,18 @@ public class PolicyJPABean {
 	private String policyName;
 	
 	
-	@OneToMany(mappedBy="policy", cascade = CascadeType.ALL, targetEntity=PartyJPABean.class)
+	@OneToMany(mappedBy="policy", cascade={CascadeType.PERSIST, CascadeType.REMOVE}, targetEntity=PartyJPABean.class,orphanRemoval=true)
 	private Collection<PartyJPABean> partyList;
 	
-	@OneToMany(mappedBy="policy", cascade = CascadeType.ALL, targetEntity=VehicleJPABean.class)
+	@OneToMany(mappedBy="policy",cascade={CascadeType.PERSIST, CascadeType.REMOVE}, targetEntity=VehicleJPABean.class)
 	private Collection<VehicleJPABean> vehicleList;
+	
+	public void removePartyChild(PartyJPABean party){
+		partyList.remove(party);
+		if(party != null){
+			party.setPolicy(null);
+		}
+	}
 
 	
 	public PolicyJPABean(){
@@ -58,14 +63,14 @@ public class PolicyJPABean {
 	}
 
 
-	public Collection<VehicleJPABean> getVehicleList() {
+/*	public Collection<VehicleJPABean> getVehicleList() {
 		return vehicleList;
 	}
 
 
 	public void setVehicleList(Collection<VehicleJPABean> vehicleList) {
 		this.vehicleList = vehicleList;
-	}
+	}*/
 
 
 	public Collection<PartyJPABean> getPartyList() {
@@ -75,5 +80,15 @@ public class PolicyJPABean {
 
 	public void setPartyList(Collection<PartyJPABean> partyList) {
 		this.partyList = partyList;
+	}
+
+
+	public Collection<VehicleJPABean> getVehicleList() {
+		return vehicleList;
+	}
+
+
+	public void setVehicleList(Collection<VehicleJPABean> vehicleList) {
+		this.vehicleList = vehicleList;
 	}
 }

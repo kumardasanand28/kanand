@@ -25,12 +25,12 @@ public class VehicleJPABean {
 	@Column(name="VEHICLE_NAME")
 	private String vehicleName;
 	
-	@ManyToOne(cascade=CascadeType.ALL)
+	@ManyToOne(cascade={CascadeType.PERSIST, CascadeType.REMOVE})
 	@JoinColumn(name="POLICY_ID", referencedColumnName="POLICY_ID")
 	private PolicyJPABean policy;
 	
 	
-	@OneToMany(mappedBy="vehicle", cascade = CascadeType.ALL, targetEntity=AddressJPABean.class)
+	@OneToMany(mappedBy="vehicle", cascade={CascadeType.PERSIST, CascadeType.REMOVE}, targetEntity=AddressJPABean.class)
 	private Collection<AddressJPABean> addressList;
 	
 	

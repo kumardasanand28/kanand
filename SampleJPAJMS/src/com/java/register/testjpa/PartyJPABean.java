@@ -22,10 +22,7 @@ public class PartyJPABean {
 	@Column(name="PARTY_NAME")
 	private String partyName;
 	
-	/*@OneToMany(mappedBy="party", cascade = CascadeType.ALL, targetEntity=PolicyJPABean.class)
-	private Collection<PolicyJPABean> policyList;*/
-	
-	@ManyToOne(cascade=CascadeType.ALL)
+	@ManyToOne(cascade={CascadeType.PERSIST, CascadeType.REMOVE})
 	@JoinColumn(name="POLICY_ID", referencedColumnName="POLICY_ID")
 	private PolicyJPABean policy;
 	
@@ -47,6 +44,14 @@ public class PartyJPABean {
 
 	public void setPartyName(String partyName) {
 		this.partyName = partyName;
+	}
+
+	public PolicyJPABean getPolicy() {
+		return policy;
+	}
+
+	public void setPolicy(PolicyJPABean policy) {
+		this.policy = policy;
 	}
 
 }

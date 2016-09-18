@@ -23,14 +23,12 @@ div.result {
 $(document).ready(function(){
 	  
 	$(document).on('click', '.submitform', function(event){
+		var id = $(this).attr('id');
 		$.ajax({
 			type: "POST",
-			url: "TestServlet", 
-			data: $("#register").serialize(),
+			url: "TestServlet?id="+id, 
 			success: function(msg){
 				console.log(msg);
-				$('#result').html('<font color="red">'+msg+'</font>');
-				$("#register").get(0).reset();
 			},
 			error: function(){
 				$('#result').html(msg);
@@ -38,6 +36,7 @@ $(document).ready(function(){
 		});
 		 event.preventDefault();
 	});
+	
 });
 </script>
 	
@@ -50,7 +49,7 @@ $(document).ready(function(){
 	<div class="generic-container">
 		<div class="panel panel-default">
 			<div class="panel-heading">
-				<span class="lead">User Registration Form </span>
+				<span class="lead">Persist Test </span>
 			</div>
 			<div class="formcontainer">
 
@@ -58,7 +57,9 @@ $(document).ready(function(){
 				<form id="register" action="register" method="post">
 
 
-							<button id="register" class="submitform">TEST PERSIST</button>
+							<button id="persist" class="submitform">TEST PERSIST</button>
+							<button id="fetchtest" class="submitform">FETCH TEST</button>
+						    <button id="delete" class="submitform">DELETE TEST</button>
 
 
 				</form>

@@ -25,7 +25,7 @@ public class AddressJPABean {
 	@Column(name="STATE")
 	private String state;
 	
-	@ManyToOne(cascade=CascadeType.ALL)
+	@ManyToOne(cascade={CascadeType.PERSIST, CascadeType.REMOVE})
 	@JoinColumn(name="VEHICLE_ID", referencedColumnName="VEHICLE_ID")
 	private VehicleJPABean vehicle;
 	
