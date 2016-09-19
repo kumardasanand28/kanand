@@ -1,6 +1,5 @@
-package com.java.register.testjpa;
+package com.java.register.testjpa.immutable;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,9 +9,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import javax.annotation.concurrent.Immutable;
+
 @Entity
+@Immutable
 @Table(name="ADDRESS_DETAILS")
-public class AddressJPABean {
+public class IAddress {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,45 +27,54 @@ public class AddressJPABean {
 	@Column(name="STATE")
 	private String state;
 	
-	@ManyToOne(cascade={CascadeType.PERSIST, CascadeType.REMOVE})
-	@JoinColumn(name="VEHICLE_ID", referencedColumnName="VEHICLE_ID")
-	private VehicleJPABean vehicle;
 	
-	public AddressJPABean(){
+	@ManyToOne
+	@JoinColumn(name="VEHICLE_ID", referencedColumnName="VEHICLE_ID")
+	private IVehicle vehicle;
+	
+	
+	public IAddress (){
 		
 	}
+
 
 	public long getId() {
 		return id;
 	}
 
+
 	public void setId(long id) {
 		this.id = id;
 	}
+
 
 	public String getCity() {
 		return city;
 	}
 
+
 	public void setCity(String city) {
 		this.city = city;
 	}
+
 
 	public String getState() {
 		return state;
 	}
 
+
 	public void setState(String state) {
 		this.state = state;
 	}
 
-	public VehicleJPABean getVehicle() {
+
+	public IVehicle getVehicle() {
 		return vehicle;
 	}
 
-	public void setVehicle(VehicleJPABean vehicle) {
+
+	public void setVehicle(IVehicle vehicle) {
 		this.vehicle = vehicle;
 	}
-	
 
 }

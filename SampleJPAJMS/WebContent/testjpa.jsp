@@ -5,7 +5,7 @@
 <html>
 <head>
 <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
-<link src="css/app.css"  rel="stylesheet"></link>
+<link src="css/app.css" rel="stylesheet"></link>
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -13,38 +13,35 @@
 </head>
 <style>
 div.result {
-  color: red;
+	color: red;
 }
-
-
 </style>
 
 <script type="text/javascript">
-$(document).ready(function(){
-	  
-	$(document).on('click', '.submitform', function(event){
-		var id = $(this).attr('id');
-		$.ajax({
-			type: "POST",
-			url: "TestServlet?id="+id, 
-			success: function(msg){
-				console.log(msg);
-			},
-			error: function(){
-				$('#result').html(msg);
-			}
+	$(document).ready(function() {
+
+		$(document).on('click', '.submitform', function(event) {
+			var id = $(this).attr('id');
+			$.ajax({
+				type : "POST",
+				url : "TestServlet?id=" + id,
+				success : function(msg) {
+					console.log(msg);
+				},
+				error : function() {
+					$('#result').html(msg);
+				}
+			});
+			event.preventDefault();
 		});
-		 event.preventDefault();
+
 	});
-	
-});
 </script>
-	
+
 
 <body class="ng-cloak">
 
-	<div id="result">
-	</div>
+	<div id="result"></div>
 
 	<div class="generic-container">
 		<div class="panel panel-default">
@@ -57,11 +54,11 @@ $(document).ready(function(){
 				<form id="register" action="register" method="post">
 
 
-							<button id="persist" class="submitform">TEST PERSIST</button>
-							<button id="fetchtest" class="submitform">FETCH TEST</button>
-						    <button id="delete" class="submitform">DELETE TEST</button>
-
-
+					<button id="persist" class="submitform">TEST PERSIST</button>
+					<button id="fetchtest" class="submitform">FETCH TEST</button>
+					<button id="delete" class="submitform">DELETE TEST</button>
+					<button id="projection" class="submitform">Projection Test</button>
+					<button id="immutableupdate" class="submitform">Immutable Entity Update Check</button>
 				</form>
 
 

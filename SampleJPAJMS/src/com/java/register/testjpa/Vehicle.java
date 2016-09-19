@@ -15,36 +15,36 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="VEHICLE_DETAILS")
-public class VehicleJPABean {
+public class Vehicle {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="VEHICLE_ID")
-	private long id;
+	private Long id;
 	
 	@Column(name="VEHICLE_NAME")
 	private String vehicleName;
 	
 	@ManyToOne(cascade={CascadeType.PERSIST, CascadeType.REMOVE})
 	@JoinColumn(name="POLICY_ID", referencedColumnName="POLICY_ID")
-	private PolicyJPABean policy;
+	private Policy policy;
 	
 	
-	@OneToMany(mappedBy="vehicle", cascade={CascadeType.PERSIST, CascadeType.REMOVE}, targetEntity=AddressJPABean.class)
-	private Collection<AddressJPABean> addressList;
+	@OneToMany(mappedBy="vehicle", cascade={CascadeType.PERSIST, CascadeType.REMOVE}, targetEntity=Address.class)
+	private Collection<Address> address;
 	
 	
-	public VehicleJPABean(){
+	public Vehicle(){
 		
 	}
 
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -59,23 +59,23 @@ public class VehicleJPABean {
 	}
 
 
-	public PolicyJPABean getPolicy() {
+	public Policy getPolicy() {
 		return policy;
 	}
 
 
-	public void setPolicy(PolicyJPABean policy) {
+	public void setPolicy(Policy policy) {
 		this.policy = policy;
 	}
 
 
-	public Collection<AddressJPABean> getAddressList() {
-		return addressList;
+	public Collection<Address> getAddressList() {
+		return address;
 	}
 
 
-	public void setAddressList(Collection<AddressJPABean> addressList) {
-		this.addressList = addressList;
+	public void setAddressList(Collection<Address> addressList) {
+		this.address = addressList;
 	}
 
 

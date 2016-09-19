@@ -25,6 +25,9 @@
 		<class>com.java.register.testjpa.PolicyJPABean</class>
 		<class>com.java.register.testjpa.AddressJPABean</class>
 		<class>com.java.register.testjpa.PartyJPABean</class>
+		<class>com.java.register.testjpa.projection.PolicyJPAProjectionBean</class>
+		<class>com.java.register.testjpa.projection.VehicleJPAProjectionBean</class>
+		<class>com.java.register.testjpa.projection.AddressJPAProjectionBean</class>
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
 			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/mycompany" />

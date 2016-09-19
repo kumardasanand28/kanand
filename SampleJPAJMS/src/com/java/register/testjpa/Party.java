@@ -12,45 +12,45 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="PARTY_DETAILS")
-public class PartyJPABean {
+public class Party {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="PARTY_ID")
-	private long id;
+	private Long id;
 	
 	@Column(name="PARTY_NAME")
-	private String partyName;
+	private String name;
 	
 	@ManyToOne(cascade={CascadeType.PERSIST, CascadeType.REMOVE})
 	@JoinColumn(name="POLICY_ID", referencedColumnName="POLICY_ID")
-	private PolicyJPABean policy;
+	private Policy policy;
 	
-	public PartyJPABean(){
+	public Party(){
 		
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
 	public String getPartyName() {
-		return partyName;
+		return name;
 	}
 
 	public void setPartyName(String partyName) {
-		this.partyName = partyName;
+		this.name = partyName;
 	}
 
-	public PolicyJPABean getPolicy() {
+	public Policy getPolicy() {
 		return policy;
 	}
 
-	public void setPolicy(PolicyJPABean policy) {
+	public void setPolicy(Policy policy) {
 		this.policy = policy;
 	}
 

@@ -13,53 +13,53 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="POLICY_DETAILS")
-public class PolicyJPABean {
+public class Policy {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="POLICY_ID")
-	private long id;
+	private Long id;
 	
 	@Column(name="POLICY_NAME")
-	private String policyName;
+	private String name;
 	
 	
-	@OneToMany(mappedBy="policy", cascade={CascadeType.PERSIST, CascadeType.REMOVE}, targetEntity=PartyJPABean.class,orphanRemoval=true)
-	private Collection<PartyJPABean> partyList;
+	@OneToMany(mappedBy="policy", cascade={CascadeType.PERSIST, CascadeType.REMOVE}, targetEntity=Party.class,orphanRemoval=true)
+	private Collection<Party> parties;
 	
-	@OneToMany(mappedBy="policy",cascade={CascadeType.PERSIST, CascadeType.REMOVE}, targetEntity=VehicleJPABean.class)
-	private Collection<VehicleJPABean> vehicleList;
+	@OneToMany(mappedBy="policy",cascade={CascadeType.PERSIST, CascadeType.REMOVE}, targetEntity=Vehicle.class)
+	private Collection<Vehicle> vehicles;
 	
-	public void removePartyChild(PartyJPABean party){
-		partyList.remove(party);
+	public void removePartyChild(Party party){
+		parties.remove(party);
 		if(party != null){
 			party.setPolicy(null);
 		}
 	}
 
 	
-	public PolicyJPABean(){
+	public Policy(){
 		
 	}
 
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
 
 	public String getPolicyName() {
-		return policyName;
+		return name;
 	}
 
 
 	public void setPolicyName(String policyName) {
-		this.policyName = policyName;
+		this.name = policyName;
 	}
 
 
@@ -73,22 +73,22 @@ public class PolicyJPABean {
 	}*/
 
 
-	public Collection<PartyJPABean> getPartyList() {
-		return partyList;
+	public Collection<Party> getPartyList() {
+		return parties;
 	}
 
 
-	public void setPartyList(Collection<PartyJPABean> partyList) {
-		this.partyList = partyList;
+	public void setPartyList(Collection<Party> partyList) {
+		this.parties = partyList;
 	}
 
 
-	public Collection<VehicleJPABean> getVehicleList() {
-		return vehicleList;
+	public Collection<Vehicle> getVehicleList() {
+		return vehicles;
 	}
 
 
-	public void setVehicleList(Collection<VehicleJPABean> vehicleList) {
-		this.vehicleList = vehicleList;
+	public void setVehicleList(Collection<Vehicle> vehicleList) {
+		this.vehicles = vehicleList;
 	}
 }
