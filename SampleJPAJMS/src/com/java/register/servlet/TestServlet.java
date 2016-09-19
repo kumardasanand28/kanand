@@ -84,10 +84,12 @@ public class TestServlet extends HttpServlet {
 				test.fetchTest("testpolicyname1"+random);
 			}else if(action.equalsIgnoreCase("delete")){
 				test.delete("testpolicyname1"+random);
-			}else if(action.equalsIgnoreCase("projection")){
-				test.loadProjection("testpolicyname1"+random);
+			}else if(action.equalsIgnoreCase("immutabletest")){
+				test.loadImmutableEntity("testpolicyname1"+random);
 			}else if(action.equalsIgnoreCase("immutableupdate")){
 				test.removeEmmutableEntityCheck("testpolicyname1"+random);
+			}else if(action.equalsIgnoreCase("projection")){
+				test.testProjectionQuery("testpolicyname1"+random);
 			}
 		}
 
