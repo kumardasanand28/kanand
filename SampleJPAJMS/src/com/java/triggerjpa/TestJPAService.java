@@ -1,6 +1,5 @@
 package com.java.triggerjpa;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -10,10 +9,13 @@ import javax.persistence.Persistence;
 import javax.persistence.Query;
 
 import com.java.register.constants.Constants;
-import com.java.register.testjpa.AddressJPABean;
-import com.java.register.testjpa.PartyJPABean;
-import com.java.register.testjpa.PolicyJPABean;
-import com.java.register.testjpa.VehicleJPABean;
+import com.java.register.testjpa.Address;
+import com.java.register.testjpa.Party;
+import com.java.register.testjpa.Policy;
+import com.java.register.testjpa.Vehicle;
+import com.java.register.testjpa.immutable.IAddress;
+import com.java.register.testjpa.immutable.IPolicy;
+import com.java.register.testjpa.immutable.IVehicle;
 
 public class TestJPAService {
 
@@ -31,54 +33,54 @@ public class TestJPAService {
 			Map<String, Object> addressMap = (Map<String, Object>) vehicleMap.get(Constants.ADDRESS_VEHICLE);
 
 
-			PartyJPABean party = new PartyJPABean();
+			Party party = new Party();
 			party.setPartyName(partyMap.get(Constants.PARTY_NAME+random).toString());
 
-			PartyJPABean party1 = new PartyJPABean();
+			Party party1 = new Party();
 			party1.setPartyName(partyMap.get(Constants.PARTY_NAME+random1).toString());
 
-			PolicyJPABean policy = new PolicyJPABean();
+			Policy policy = new Policy();
 			policy.setPolicyName(policyMap.get(Constants.POLICY_NAME).toString());
 			party.setPolicy(policy);
 			party1.setPolicy(policy);
 
 
-			VehicleJPABean vehicle = new VehicleJPABean();
+			Vehicle vehicle = new Vehicle();
 			vehicle.setVehicleName(vehicleMap.get(Constants.VEHICLE_NAME+random).toString());
 			vehicle.setPolicy(policy);
-			
 
-			VehicleJPABean vehicle1 = new VehicleJPABean();
+
+			Vehicle vehicle1 = new Vehicle();
 			vehicle1.setVehicleName(vehicleMap.get(Constants.VEHICLE_NAME+random1).toString());
 			vehicle1.setPolicy(policy);
-			
-			
-			
-			
-			
-			
-			AddressJPABean address = new AddressJPABean();
+
+
+
+
+
+
+			Address address = new Address();
 			address.setCity(addressMap.get("city"+random).toString());
 			address.setState("Kerala");
 			address.setVehicle(vehicle);
 
-			AddressJPABean address1 = new AddressJPABean();
+			Address address1 = new Address();
 			address1.setCity(addressMap.get("city"+random1).toString());
 			address1.setVehicle(vehicle);
 			address1.setState("Kerala");
-			
-			AddressJPABean address2 = new AddressJPABean();
+
+			Address address2 = new Address();
 			address2.setCity(addressMap.get("city"+random2).toString());
 			address2.setVehicle(vehicle1);
 			address2.setState("Kerala");
-			
-			AddressJPABean address3 = new AddressJPABean();
+
+			Address address3 = new Address();
 			address3.setCity(addressMap.get("city"+random3).toString());
 			address3.setVehicle(vehicle1);
 			address3.setState("Kerala");
 
-			
-			
+
+
 			EntityManager em = createEntityManager();
 			em.getTransaction().begin();
 			persistDetails(party, party1, vehicle, vehicle1, address, address1,
@@ -105,10 +107,10 @@ public class TestJPAService {
 	 * @param address3
 	 * @param em
 	 */
-	private void persistDetails(PartyJPABean party, PartyJPABean party1,
-			VehicleJPABean vehicle, VehicleJPABean vehicle1,
-			AddressJPABean address, AddressJPABean address1,
-			AddressJPABean address2, AddressJPABean address3, EntityManager em) {
+	private void persistDetails(Party party, Party party1,
+			Vehicle vehicle, Vehicle vehicle1,
+			Address address, Address address1,
+			Address address2, Address address3, EntityManager em) {
 		em.persist(address);
 		em.persist(address1);
 		em.persist(address2);
@@ -118,8 +120,8 @@ public class TestJPAService {
 		em.persist(party);
 		em.persist(party1);
 	}
-	
-	
+
+
 
 
 	private EntityManager createEntityManager() {
@@ -134,24 +136,24 @@ public class TestJPAService {
 	public void fetchTest(String policyName) {
 		String query = "SELECT u FROM PolicyJPABean u where u.policyName= :policyName";
 		EntityManager entitymanager = createEntityManager();
-		Query jpaQuery = entitymanager.createQuery(query,PolicyJPABean.class).setParameter("policyName", policyName);
-		List<PolicyJPABean> policyJPA = (List<PolicyJPABean>) jpaQuery.getResultList();
-		PolicyJPABean policyJpa = policyJPA.get(0);
-		
+		Query jpaQuery = entitymanager.createQuery(query,Policy.class).setParameter("policyName", policyName);
+		List<Policy> policyJPA = (List<Policy>) jpaQuery.getResultList();
+		Policy policyJpa = policyJPA.get(0);
+
 		System.out.println(policyJpa);
 	}
-	
+
 	public void delete(String policyName) {
 		String query = "SELECT u FROM PolicyJPABean u where u.policyName= :policyName";
 		EntityManager entitymanager = createEntityManager();
-		Query jpaQuery = entitymanager.createQuery(query,PolicyJPABean.class).setParameter("policyName", policyName);
-		List<PolicyJPABean> policyJPA = (List<PolicyJPABean>) jpaQuery.getResultList();
-		PolicyJPABean policyJpa = policyJPA.get(0);
-		
+		Query jpaQuery = entitymanager.createQuery(query,Policy.class).setParameter("policyName", policyName);
+		List<Policy> policyJPA = (List<Policy>) jpaQuery.getResultList();
+		Policy policyJpa = policyJPA.get(0);
+
 		try{
 			entitymanager.getTransaction().begin();
 			//entitymanager.remove(policyJpa);
-			List<PartyJPABean> partyList = (List<PartyJPABean>) policyJpa.getPartyList();
+			List<Party> partyList = (List<Party>) policyJpa.getPartyList();
 			policyJpa.removePartyChild(partyList.get(0));
 			entitymanager.getTransaction().commit();
 			entitymanager.close();
@@ -160,4 +162,50 @@ public class TestJPAService {
 		}
 	}
 
+	public void loadProjection(String policyName){
+		IPolicy policyJpa = fetchPolicyProjectedJPA(policyName);
+		List<IVehicle> vehicleList = (List<IVehicle>) policyJpa.getVehicleList();
+		for(IVehicle vehicleJPAproj : vehicleList){
+			List<IAddress> addressList = (List<IAddress>) vehicleJPAproj.getAddressList();
+			for(IAddress address : addressList){
+				System.out.println(address.getCity());
+				System.out.println(address.getState());
+			}
+		}
+
+	}
+
+
+
+
+	private IPolicy fetchPolicyProjectedJPA(String policyName) {
+		IPolicy policyJpa = null;
+		try{
+			String query = "SELECT u FROM PolicyJPAProjectionBean u where u.policyName= :policyName";
+			EntityManager entitymanager = createEntityManager();
+			Query jpaQuery = entitymanager.createQuery(query,IPolicy.class).setParameter("policyName", policyName);
+			List<IPolicy> policyJPA = (List<IPolicy>) jpaQuery.getResultList();
+			policyJpa = policyJPA.get(0);
+		}catch(Exception e) {
+			System.out.println(e);
+		}
+		return policyJpa;
+	}
+
+
+
+
+	public void removeEmmutableEntityCheck(String policyName){
+		try{
+			IPolicy policyJpa = fetchPolicyProjectedJPA(policyName);
+			List<IVehicle> vehicleList = (List<IVehicle>) policyJpa.getVehicleList();
+			EntityManager entitymanager = createEntityManager();
+			entitymanager.getTransaction().begin();
+			policyJpa.removeVehicleChild(vehicleList.get(0));
+			entitymanager.getTransaction().commit();
+			entitymanager.close();
+		}catch(Exception e) {
+			System.out.println(e);
+		}
+	}
 }
