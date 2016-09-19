@@ -57,8 +57,9 @@ div.result {
 					<button id="persist" class="submitform">TEST PERSIST</button>
 					<button id="fetchtest" class="submitform">FETCH TEST</button>
 					<button id="delete" class="submitform">DELETE TEST</button>
-					<button id="projection" class="submitform">Projection Test</button>
+					<button id="immutabletest" class="submitform">Immutable Load Test</button>
 					<button id="immutableupdate" class="submitform">Immutable Entity Update Check</button>
+					<button id="projection" class="submitform">Projection Test</button>
 				</form>
 
 

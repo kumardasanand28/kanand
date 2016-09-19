@@ -21,13 +21,13 @@
 	</persistence-unit>
 	<persistence-unit name="partyUnit" transaction-type="RESOURCE_LOCAL">
 		<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-		<class>com.java.register.testjpa.VehicleJPABean</class>
-		<class>com.java.register.testjpa.PolicyJPABean</class>
-		<class>com.java.register.testjpa.AddressJPABean</class>
-		<class>com.java.register.testjpa.PartyJPABean</class>
-		<class>com.java.register.testjpa.projection.PolicyJPAProjectionBean</class>
-		<class>com.java.register.testjpa.projection.VehicleJPAProjectionBean</class>
-		<class>com.java.register.testjpa.projection.AddressJPAProjectionBean</class>
+		<class>com.java.register.testjpa.Vehicle</class>
+		<class>com.java.register.testjpa.Policy</class>
+		<class>com.java.register.testjpa.Address</class>
+		<class>com.java.register.testjpa.Party</class>
+		<class>com.java.register.testjpa.immutable.IPolicy</class>
+		<class>com.java.register.testjpa.immutable.IAddress</class>
+		<class>com.java.register.testjpa.immutable.IVehicle</class>
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
 			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/mycompany" />

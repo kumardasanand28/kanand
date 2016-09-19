@@ -30,7 +30,8 @@ public class IVehicle {
 	@JoinColumn(name="POLICY_ID", referencedColumnName="POLICY_ID")
 	private IPolicy policy;
 	
-	@OneToMany(mappedBy="vehicle", cascade={CascadeType.PERSIST}, targetEntity=IAddress.class,fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="vehicle", cascade={CascadeType.PERSIST},
+			targetEntity=IAddress.class,fetch=FetchType.EAGER)
 	private Collection<IAddress> address;
 	
 	public IVehicle(){

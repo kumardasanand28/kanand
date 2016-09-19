@@ -7,8 +7,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 import com.java.register.constants.Constants;
+import com.java.register.projectionquery.PolicyParty;
 import com.java.register.testjpa.Address;
 import com.java.register.testjpa.Party;
 import com.java.register.testjpa.Policy;
@@ -134,7 +136,7 @@ public class TestJPAService {
 
 
 	public void fetchTest(String policyName) {
-		String query = "SELECT u FROM PolicyJPABean u where u.policyName= :policyName";
+		String query = "SELECT u FROM PolicyJPABean u where u.name= :policyName";
 		EntityManager entitymanager = createEntityManager();
 		Query jpaQuery = entitymanager.createQuery(query,Policy.class).setParameter("policyName", policyName);
 		List<Policy> policyJPA = (List<Policy>) jpaQuery.getResultList();
@@ -144,7 +146,7 @@ public class TestJPAService {
 	}
 
 	public void delete(String policyName) {
-		String query = "SELECT u FROM PolicyJPABean u where u.policyName= :policyName";
+		String query = "SELECT u FROM PolicyJPABean u where u.name= :policyName";
 		EntityManager entitymanager = createEntityManager();
 		Query jpaQuery = entitymanager.createQuery(query,Policy.class).setParameter("policyName", policyName);
 		List<Policy> policyJPA = (List<Policy>) jpaQuery.getResultList();
@@ -162,7 +164,7 @@ public class TestJPAService {
 		}
 	}
 
-	public void loadProjection(String policyName){
+	public void loadImmutableEntity(String policyName){
 		IPolicy policyJpa = fetchPolicyProjectedJPA(policyName);
 		List<IVehicle> vehicleList = (List<IVehicle>) policyJpa.getVehicleList();
 		for(IVehicle vehicleJPAproj : vehicleList){
@@ -181,7 +183,7 @@ public class TestJPAService {
 	private IPolicy fetchPolicyProjectedJPA(String policyName) {
 		IPolicy policyJpa = null;
 		try{
-			String query = "SELECT u FROM PolicyJPAProjectionBean u where u.policyName= :policyName";
+			String query = "SELECT u FROM PolicyJPAProjectionBean u where u.name= :policyName";
 			EntityManager entitymanager = createEntityManager();
 			Query jpaQuery = entitymanager.createQuery(query,IPolicy.class).setParameter("policyName", policyName);
 			List<IPolicy> policyJPA = (List<IPolicy>) jpaQuery.getResultList();
@@ -197,15 +199,47 @@ public class TestJPAService {
 
 	public void removeEmmutableEntityCheck(String policyName){
 		try{
+			
 			IPolicy policyJpa = fetchPolicyProjectedJPA(policyName);
 			List<IVehicle> vehicleList = (List<IVehicle>) policyJpa.getVehicleList();
 			EntityManager entitymanager = createEntityManager();
+			
 			entitymanager.getTransaction().begin();
+			//removing the child entity from the parent of an immutable 
+			//object does not throw error, it is silently suppressed by JPA
 			policyJpa.removeVehicleChild(vehicleList.get(0));
 			entitymanager.getTransaction().commit();
 			entitymanager.close();
+			
+			
 		}catch(Exception e) {
 			System.out.println(e);
 		}
 	}
+	
+	
+	public void testProjectionQuery(String policyName){
+		try{
+
+			EntityManager entitymanager = createEntityManager();
+			
+			
+			String queryStr = "SELECT NEW com.java.register.projectionquery.PolicyParty(policy.name,party.name) FROM "
+					+ "Policy AS policy,Party AS party WHERE policy.id=party.policy.id "
+					+ "AND policy.name= :policyName";
+
+			TypedQuery<PolicyParty> query = entitymanager.createQuery(queryStr,PolicyParty.class).
+					setParameter("policyName", policyName);
+			List<PolicyParty> results = query.getResultList();
+			
+			
+			
+			System.out.println(results);
+		}
+			catch(Exception e) {
+				System.out.println(e);
+			}
+
+		}
+		
 }
