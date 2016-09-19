@@ -24,10 +24,12 @@ public class Policy {
 	private String name;
 	
 	
-	@OneToMany(mappedBy="policy", cascade={CascadeType.PERSIST, CascadeType.REMOVE}, targetEntity=Party.class,orphanRemoval=true)
+	@OneToMany(mappedBy="policy", cascade={CascadeType.PERSIST, CascadeType.REMOVE},
+			targetEntity=Party.class)
 	private Collection<Party> parties;
 	
-	@OneToMany(mappedBy="policy",cascade={CascadeType.PERSIST, CascadeType.REMOVE}, targetEntity=Vehicle.class)
+	@OneToMany(mappedBy="policy",cascade={CascadeType.PERSIST, CascadeType.REMOVE}, 
+			targetEntity=Vehicle.class)
 	private Collection<Vehicle> vehicles;
 	
 	public void removePartyChild(Party party){
