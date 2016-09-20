@@ -136,7 +136,7 @@ public class TestJPAService {
 
 
 	public void fetchTest(String policyName) {
-		String query = "SELECT u FROM PolicyJPABean u where u.name= :policyName";
+		String query = "SELECT u FROM Policy u where u.name= :policyName";
 		EntityManager entitymanager = createEntityManager();
 		Query jpaQuery = entitymanager.createQuery(query,Policy.class).setParameter("policyName", policyName);
 		List<Policy> policyJPA = (List<Policy>) jpaQuery.getResultList();
@@ -146,7 +146,7 @@ public class TestJPAService {
 	}
 
 	public void delete(String policyName) {
-		String query = "SELECT u FROM PolicyJPABean u where u.name= :policyName";
+		String query = "SELECT u FROM Policy u where u.name= :policyName";
 		EntityManager entitymanager = createEntityManager();
 		Query jpaQuery = entitymanager.createQuery(query,Policy.class).setParameter("policyName", policyName);
 		List<Policy> policyJPA = (List<Policy>) jpaQuery.getResultList();
@@ -183,7 +183,7 @@ public class TestJPAService {
 	private IPolicy fetchPolicyProjectedJPA(String policyName) {
 		IPolicy policyJpa = null;
 		try{
-			String query = "SELECT u FROM PolicyJPAProjectionBean u where u.name= :policyName";
+			String query = "SELECT u FROM IPolicy u where u.name= :policyName";
 			EntityManager entitymanager = createEntityManager();
 			Query jpaQuery = entitymanager.createQuery(query,IPolicy.class).setParameter("policyName", policyName);
 			List<IPolicy> policyJPA = (List<IPolicy>) jpaQuery.getResultList();
@@ -199,31 +199,31 @@ public class TestJPAService {
 
 	public void removeEmmutableEntityCheck(String policyName){
 		try{
-			
+
 			IPolicy policyJpa = fetchPolicyProjectedJPA(policyName);
 			List<IVehicle> vehicleList = (List<IVehicle>) policyJpa.getVehicleList();
 			EntityManager entitymanager = createEntityManager();
-			
+
 			entitymanager.getTransaction().begin();
 			//removing the child entity from the parent of an immutable 
 			//object does not throw error, it is silently suppressed by JPA
 			policyJpa.removeVehicleChild(vehicleList.get(0));
 			entitymanager.getTransaction().commit();
 			entitymanager.close();
-			
-			
+
+
 		}catch(Exception e) {
 			System.out.println(e);
 		}
 	}
-	
-	
+
+
 	public void testProjectionQuery(String policyName){
 		try{
 
 			EntityManager entitymanager = createEntityManager();
-			
-			
+
+
 			String queryStr = "SELECT NEW com.java.register.projectionquery.PolicyParty(policy.name,party.name) FROM "
 					+ "Policy AS policy,Party AS party WHERE policy.id=party.policy.id "
 					+ "AND policy.name= :policyName";
@@ -231,15 +231,50 @@ public class TestJPAService {
 			TypedQuery<PolicyParty> query = entitymanager.createQuery(queryStr,PolicyParty.class).
 					setParameter("policyName", policyName);
 			List<PolicyParty> results = query.getResultList();
-			
-			
-			
+
+
+
 			System.out.println(results);
 		}
-			catch(Exception e) {
-				System.out.println(e);
-			}
-
+		catch(Exception e) {
+			System.out.println(e);
 		}
-		
+
+	}
+
+	public void testManyToMany(Map<String, Object> policyMap, Map<String, Object> partyMap){
+		try{
+			com.java.register.testjpa.manytomany.MParty party = new com.java.register.testjpa.manytomany.MParty();
+			party.setName(partyMap.get(Constants.PARTY_NAME+random).toString());
+
+			com.java.register.testjpa.manytomany.MParty party1 = new com.java.register.testjpa.manytomany.MParty();
+			party1.setName(partyMap.get(Constants.PARTY_NAME+random1).toString());
+
+
+			com.java.register.testjpa.manytomany.MPolicy policy = new com.java.register.testjpa.manytomany.MPolicy();
+			policy.setName(policyMap.get(Constants.POLICY_NAME).toString());
+
+			com.java.register.testjpa.manytomany.MPolicy policy1 = new com.java.register.testjpa.manytomany.MPolicy();
+			policy1.setName(policyMap.get(Constants.POLICY_NAME+random).toString());
+
+			party.getPolicies().add(policy);
+			party.getPolicies().add(policy1);
+
+			party1.getPolicies().add(policy);
+			party1.getPolicies().add(policy1);
+
+			EntityManager entitymanager = createEntityManager();
+			entitymanager.getTransaction().begin();
+			entitymanager.persist(party);
+			entitymanager.persist(party1);
+			entitymanager.persist(policy);
+			entitymanager.persist(policy1);
+			entitymanager.getTransaction().commit();
+			entitymanager.close();
+		}catch(Exception e) {
+			System.out.println(e);
+		}
+
+	}
+
 }

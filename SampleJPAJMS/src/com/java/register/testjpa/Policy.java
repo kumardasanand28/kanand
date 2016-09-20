@@ -5,6 +5,7 @@ import java.util.Collection;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -24,12 +25,10 @@ public class Policy {
 	private String name;
 	
 	
-	@OneToMany(mappedBy="policy", cascade={CascadeType.PERSIST, CascadeType.REMOVE},
-			targetEntity=Party.class)
+	@OneToMany(mappedBy="policy",targetEntity=Party.class,fetch=FetchType.EAGER,orphanRemoval=true)
 	private Collection<Party> parties;
 	
-	@OneToMany(mappedBy="policy",cascade={CascadeType.PERSIST, CascadeType.REMOVE}, 
-			targetEntity=Vehicle.class)
+	@OneToMany(mappedBy="policy",targetEntity=Vehicle.class,fetch=FetchType.EAGER,orphanRemoval=true)
 	private Collection<Vehicle> vehicles;
 	
 	public void removePartyChild(Party party){

@@ -5,6 +5,7 @@ import java.util.Collection;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -30,7 +31,8 @@ public class Vehicle {
 	private Policy policy;
 	
 	
-	@OneToMany(mappedBy="vehicle", cascade={CascadeType.PERSIST, CascadeType.REMOVE}, targetEntity=Address.class)
+	@OneToMany(mappedBy="vehicle", cascade={CascadeType.PERSIST, CascadeType.REMOVE},
+			targetEntity=Address.class,fetch=FetchType.EAGER,orphanRemoval=true)
 	private Collection<Address> address;
 	
 	

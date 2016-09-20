@@ -90,6 +90,16 @@ public class TestServlet extends HttpServlet {
 				test.removeEmmutableEntityCheck("testpolicyname1"+random);
 			}else if(action.equalsIgnoreCase("projection")){
 				test.testProjectionQuery("testpolicyname1"+random);
+			}else if(action.equalsIgnoreCase("manyToMany")){
+				
+				Map<String, Object> policyMap = new HashMap<>();
+				policyMap.put(Constants.POLICY_NAME, "testpolicyname"+random);
+				policyMap.put(Constants.POLICY_NAME+random, "testpolicyname1"+random1);
+				
+				Map<String, Object> partyMap = new HashMap<>();
+				partyMap.put(Constants.PARTY_NAME+random, "testpartyname"+random);
+				partyMap.put(Constants.PARTY_NAME+random1, "testpartyname"+random1);
+				test.testManyToMany(policyMap,partyMap);
 			}
 		}
 

@@ -27,7 +27,7 @@ $(document).ready(function(){
 		var name = $(this).attr('name');
 		$.ajax({
 			type: "POST",
-			url: "register?action="+id+"&name="+name, 
+			url: "UserRegistrationServlet?action="+id+"&name="+name, 
 			data: $("#register").serialize(),
 			success: function(msg){
 				console.log(msg);
@@ -58,7 +58,7 @@ $(document).ready(function(){
 					"getAllValues" : "false",
 					"name" : param
 				},
-				url : "register",
+				url : "UserRegistrationServlet",
 				success : function(responseJson) {
 					console.log(responseJson);
 					$('#name').val(responseJson.fullName);

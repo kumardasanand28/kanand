@@ -28,6 +28,8 @@
 		<class>com.java.register.testjpa.immutable.IPolicy</class>
 		<class>com.java.register.testjpa.immutable.IAddress</class>
 		<class>com.java.register.testjpa.immutable.IVehicle</class>
+		<class>com.java.register.testjpa.manytomany.MParty</class>
+		<class>com.java.register.testjpa.manytomany.MPolicy</class>
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
 			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/mycompany" />
