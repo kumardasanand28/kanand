@@ -1,8 +1,8 @@
 package com.java.register.testjpa;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -22,7 +22,7 @@ public class Party {
 	@Column(name="PARTY_NAME")
 	private String name;
 	
-	@ManyToOne(cascade={CascadeType.PERSIST, CascadeType.REMOVE})
+	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="POLICY_ID", referencedColumnName="POLICY_ID")
 	private Policy policy;
 	

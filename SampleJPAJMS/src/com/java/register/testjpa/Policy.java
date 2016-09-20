@@ -25,10 +25,10 @@ public class Policy {
 	private String name;
 	
 	
-	@OneToMany(mappedBy="policy",targetEntity=Party.class,fetch=FetchType.EAGER,orphanRemoval=true)
+	@OneToMany(mappedBy="policy",targetEntity=Party.class,cascade=CascadeType.ALL)
 	private Collection<Party> parties;
 	
-	@OneToMany(mappedBy="policy",targetEntity=Vehicle.class,fetch=FetchType.EAGER,orphanRemoval=true)
+	@OneToMany(mappedBy="policy",targetEntity=Vehicle.class,cascade=CascadeType.ALL)
 	private Collection<Vehicle> vehicles;
 	
 	public void removePartyChild(Party party){

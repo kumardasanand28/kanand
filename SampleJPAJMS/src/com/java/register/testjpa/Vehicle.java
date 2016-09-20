@@ -26,13 +26,13 @@ public class Vehicle {
 	@Column(name="VEHICLE_NAME")
 	private String vehicleName;
 	
-	@ManyToOne(cascade={CascadeType.PERSIST, CascadeType.REMOVE})
+	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="POLICY_ID", referencedColumnName="POLICY_ID")
 	private Policy policy;
 	
 	
-	@OneToMany(mappedBy="vehicle", cascade={CascadeType.PERSIST, CascadeType.REMOVE},
-			targetEntity=Address.class,fetch=FetchType.EAGER,orphanRemoval=true)
+	@OneToMany(mappedBy="vehicle",cascade=CascadeType.ALL,
+			targetEntity=Address.class,fetch=FetchType.EAGER)
 	private Collection<Address> address;
 	
 	

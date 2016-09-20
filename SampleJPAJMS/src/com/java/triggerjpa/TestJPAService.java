@@ -10,6 +10,9 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import com.java.register.constants.Constants;
+import com.java.register.mantomanyjpa.EmpProjectAssociation;
+import com.java.register.mantomanyjpa.Employee;
+import com.java.register.mantomanyjpa.Project;
 import com.java.register.projectionquery.PolicyParty;
 import com.java.register.testjpa.Address;
 import com.java.register.testjpa.Party;
@@ -18,6 +21,7 @@ import com.java.register.testjpa.Vehicle;
 import com.java.register.testjpa.immutable.IAddress;
 import com.java.register.testjpa.immutable.IPolicy;
 import com.java.register.testjpa.immutable.IVehicle;
+import com.java.register.testjpa.manytomany.MPolicy;
 
 public class TestJPAService {
 
@@ -143,6 +147,32 @@ public class TestJPAService {
 		Policy policyJpa = policyJPA.get(0);
 
 		System.out.println(policyJpa);
+		fetchTestManyToMany("testpolicyname1_Two");
+		List<Party> partyList = (List<Party>) policyJpa.getPartyList();
+		fetchTestManyToOne(partyList.get(0).getPartyName());
+	}
+	
+	public void fetchTestManyToMany(String policyName) {
+		String query = "SELECT u FROM MPolicy u where u.name= :policyName";
+		EntityManager entitymanager = createEntityManager();
+		Query jpaQuery = entitymanager.createQuery(query,Policy.class).setParameter("policyName", policyName);
+		List<MPolicy> policyJPA = (List<MPolicy>) jpaQuery.getResultList();
+		MPolicy policyJpa = policyJPA.get(0);
+
+		System.out.println(policyJpa);
+	}
+	
+	public void fetchTestManyToOne(String partyName) {
+		try{
+		String query = "SELECT u FROM Party u where u.name= :partyName";
+		EntityManager entitymanager = createEntityManager();
+		Query jpaQuery = entitymanager.createQuery(query,Party.class).setParameter("partyName", partyName);
+		List<Party> vehicleJpa = (List<Party>) jpaQuery.getResultList();
+		Party vehicle = vehicleJpa.get(0);
+		System.out.println(vehicle);
+		}catch(Exception e) {
+			System.out.println(e);
+		}
 	}
 
 	public void delete(String policyName) {
@@ -151,12 +181,12 @@ public class TestJPAService {
 		Query jpaQuery = entitymanager.createQuery(query,Policy.class).setParameter("policyName", policyName);
 		List<Policy> policyJPA = (List<Policy>) jpaQuery.getResultList();
 		Policy policyJpa = policyJPA.get(0);
-
 		try{
 			entitymanager.getTransaction().begin();
-			//entitymanager.remove(policyJpa);
 			List<Party> partyList = (List<Party>) policyJpa.getPartyList();
-			policyJpa.removePartyChild(partyList.get(0));
+			entitymanager.remove(partyList.get(0));
+			/*List<Party> partyList = (List<Party>) policyJpa.getPartyList();
+			policyJpa.removePartyChild(partyList.get(0));*/
 			entitymanager.getTransaction().commit();
 			entitymanager.close();
 		}catch(Exception e) {
@@ -275,6 +305,37 @@ public class TestJPAService {
 			System.out.println(e);
 		}
 
+	}
+
+
+	public void testManyToManyExtra(Map<String, Object> projectMap, Map<String, Object> empMap){
+
+		try{
+			Project project = new Project(projectMap.get(Constants.PROJECT_NAME).toString());
+			Project project1 = new Project(projectMap.get(Constants.PROJECT_NAME+random).toString());
+
+			Employee employee = new Employee(empMap.get(Constants.EMP_NAME).toString());
+			Employee employee1 = new Employee(empMap.get(Constants.EMP_NAME+random).toString());
+
+			EmpProjectAssociation association = project.addEmployee(employee);
+			EmpProjectAssociation association1 =  project.addEmployee(employee1);
+			EmpProjectAssociation association2 = project1.addEmployee(employee);
+			EmpProjectAssociation association3 = project1.addEmployee(employee1);
+			EntityManager entitymanager = createEntityManager();
+			entitymanager.getTransaction().begin();
+			entitymanager.persist(project);
+			entitymanager.persist(project1);
+			entitymanager.persist(employee);
+			entitymanager.persist(employee1);
+			entitymanager.persist(association);
+			entitymanager.persist(association1);
+			entitymanager.persist(association2);
+			entitymanager.persist(association3);
+			entitymanager.getTransaction().commit();
+			entitymanager.close();
+		}catch(Exception e) {
+			System.out.println(e);
+		}
 	}
 
 }

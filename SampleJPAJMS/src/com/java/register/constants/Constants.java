@@ -15,4 +15,8 @@ public class Constants {
 	
 	public static final String ADDRESS_VEHICLE = "ADDRESS_VEHICLE";
 
+	
+	public static final String PROJECT_NAME = "PROJECT_NAME";
+	
+	public static final String EMP_NAME = "EMP_NAME";
 }

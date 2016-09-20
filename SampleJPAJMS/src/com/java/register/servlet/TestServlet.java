@@ -100,6 +100,15 @@ public class TestServlet extends HttpServlet {
 				partyMap.put(Constants.PARTY_NAME+random, "testpartyname"+random);
 				partyMap.put(Constants.PARTY_NAME+random1, "testpartyname"+random1);
 				test.testManyToMany(policyMap,partyMap);
+			}else if(action.equalsIgnoreCase("manyToManyExtra")){
+				Map<String, Object> projectMap = new HashMap<>();
+				projectMap.put(Constants.PROJECT_NAME, "testprojectname"+random);
+				projectMap.put(Constants.PROJECT_NAME+random, "testprojectname"+random1);
+				
+				Map<String, Object> empMap = new HashMap<>();
+				empMap.put(Constants.EMP_NAME, "testempname"+random);
+				empMap.put(Constants.PARTY_NAME+random, "testempname"+random1);
+				test.testManyToManyExtra(projectMap,empMap);
 			}
 		}
 

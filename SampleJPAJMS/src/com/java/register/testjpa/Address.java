@@ -3,6 +3,7 @@ package com.java.register.testjpa;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -25,7 +26,7 @@ public class Address {
 	@Column(name="STATE")
 	private String state;
 	
-	@ManyToOne(cascade={CascadeType.PERSIST, CascadeType.REMOVE})
+	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="VEHICLE_ID", referencedColumnName="VEHICLE_ID")
 	private Vehicle vehicle;
 	

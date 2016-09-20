@@ -61,6 +61,7 @@ div.result {
 					<button id="immutableupdate" class="submitform">Immutable Entity Update Check</button>
 					<button id="projection" class="submitform">Projection Test</button>
 					<button id="manyToMany" class="submitform">Many To many Test</button>
+					<button id="manyToManyExtra" class="submitform">Many To many Test With Extra Column</button>
 				</form>
 
 
