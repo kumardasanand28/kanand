@@ -1,15 +1,18 @@
 <persistence version="2.0"
 	xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
-	<persistence-unit name="user-name">
+
+
+	<persistence-unit name="user-name" transaction-type="RESOURCE_LOCAL">
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
-		<properties>
-           <property name="hibernate.connection.url" value="jdbc:h2:/~test" /> 
-            <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"></property>
-            <property name="hibernate.connection.driver_class" value="org.h2.Driver" />
-             <property name="hibernate.hbm2ddl.auto" value="create"/>
-        <property name="hibernate.show_sql" value="true"/>
-            
-		</properties>
+		<non-jta-data-source>java:jboss/mysql</non-jta-data-source>
+		<class>com.entity.UserEntity</class>
+		<class>com.mysqlentity.EntityUser</class>
+	</persistence-unit>
+
+	<persistence-unit name="user-name-ds2" transaction-type="RESOURCE_LOCAL">
+		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+		<non-jta-data-source>java:jboss/mysql</non-jta-data-source>
+		<class>com.mysqlentity.EntityUser</class>
 	</persistence-unit>
 </persistence>
