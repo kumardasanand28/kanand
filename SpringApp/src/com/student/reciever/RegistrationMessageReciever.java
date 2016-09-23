@@ -14,13 +14,17 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.student.entity.UserEntity;
-import com.student.repository.UserRepository;  
+import com.student.repository.UserRepository;
+import com.student.springjpa.service.UserService;  
 
 
 public class RegistrationMessageReciever implements MessageListener {
 
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private UserService userService;
 
 	public void onMessage(Message message) {
 		if(message instanceof TextMessage){
@@ -28,7 +32,8 @@ public class RegistrationMessageReciever implements MessageListener {
 				String msgText = ((TextMessage) message).getText();
 				System.out.println(msgText);
 				UserEntity user = parseMessage(msgText);
-				getUserRepository().insert(user);
+				//getUserRepository().insert(user);
+				userService.create(user);
 			} catch (JMSException e) {
 				e.printStackTrace();
 			}catch (Exception e) {
@@ -75,6 +80,14 @@ public class RegistrationMessageReciever implements MessageListener {
 
 	public void setUserRepository(UserRepository userRepository) {
 		this.userRepository = userRepository;
+	}
+
+	public UserService getUserService() {
+		return userService;
+	}
+
+	public void setUserService(UserService userService) {
+		this.userService = userService;
 	}
 
 

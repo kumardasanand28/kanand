@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -16,12 +15,13 @@ import com.google.gson.Gson;
 import com.student.bean.Student;
 import com.student.configuration.DIConfiguration;
 import com.student.entity.UserEntity;
-import com.student.repository.UserRepository;
 import com.student.service.RegistrationService;
+import com.student.springjpa.service.UserService;
 
 @Controller
 @RequestMapping("/register")
 public class StudentController {
+	
 	
 	@RequestMapping(value="/admissionForm.html", method = RequestMethod.GET)
 	public ModelAndView getAdmissionForm(){
@@ -52,8 +52,21 @@ public class StudentController {
 			e.printStackTrace();
 		}
 		ModelAndView mav = new ModelAndView("AdmissionSuccess");
-		UserRepository user = (UserRepository) contextAno.getBean(UserRepository.class);
-		List<UserEntity> userList = user.selectAll();
+		//UserRepository user = (UserRepository) contextAno.getBean(UserRepository.class);
+		//List<UserEntity> userList = user.selectAll();
+		UserService service = (UserService)contextAno.getBean(UserService.class);
+		List<UserEntity> userList = service.findAll();
+		
+		
+		UserEntity user = userList.get(0);
+		UserEntity userFoundById =  service.findById(user.getId());
+		List<UserEntity> userFoundByNameOrHobby =  service.findByNameOrHobby(userFoundById.getStudentName(), userFoundById.getStudentHobby());
+		List<UserEntity> userFoundByHobby = service.findByHobby(userFoundById.getStudentHobby());
+		service.delete(user);
+		userList.remove(user);
+	
+		
+		
 		mav.addObject("resultList", userList);
 		mav.addObject("message", "Details Submitted by you Successfully");
 		return mav;

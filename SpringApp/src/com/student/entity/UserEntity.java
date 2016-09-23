@@ -16,7 +16,7 @@ public class UserEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+	private Long id;
 
 	@Column(name="FULL_NAME")
 	private String studentName;
@@ -85,5 +85,11 @@ public class UserEntity {
 
 	public void setStudentSkillSet(String studentSkillSet) {
 		this.studentSkillSet = studentSkillSet;
+	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
 	}
 }
