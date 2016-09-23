@@ -17,7 +17,6 @@ import com.student.entity.UserEntity;
 import com.student.repository.UserRepository;
 import com.student.springjpa.service.UserService;  
 
-
 public class RegistrationMessageReciever implements MessageListener {
 
 	@Autowired

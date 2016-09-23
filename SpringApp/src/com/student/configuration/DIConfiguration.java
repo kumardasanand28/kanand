@@ -33,7 +33,7 @@ import com.student.springjpa.service.impl.UserServiceImpl;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(basePackages={"com.student.springjpa"})
-@ComponentScan(basePackages = {"com.student","com.student.repository"})
+@ComponentScan(basePackages = "com.student")
 @Import({MessagingConfiguration.class,MessagingListnerConfiguration.class})
 public class DIConfiguration{
 
@@ -48,7 +48,7 @@ public class DIConfiguration{
 		return resolver;
 	}
 
-	@Bean
+    @Bean
 	public RegistrationService getRegService(){
 		RegistrationService regService = new RegistrationService();
 		regService.setJmsTemplate(jmsTemplate);

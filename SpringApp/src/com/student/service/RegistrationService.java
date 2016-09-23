@@ -4,7 +4,6 @@ import javax.jms.Queue;
 
 import org.springframework.jms.core.JmsTemplate;
 
-
 public class RegistrationService {
 
 	private JmsTemplate jmsTemplate;

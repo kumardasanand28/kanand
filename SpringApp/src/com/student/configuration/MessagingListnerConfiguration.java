@@ -20,8 +20,7 @@ public class MessagingListnerConfiguration {
 	
 	@Autowired
 	ActiveMQQueue queue;
-
-
+	
 	@Bean
 	public DefaultMessageListenerContainer jmsListenerContainerFactory() {
 		DefaultMessageListenerContainer factory = new DefaultMessageListenerContainer();

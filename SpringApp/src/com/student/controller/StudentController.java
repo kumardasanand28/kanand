@@ -62,8 +62,8 @@ public class StudentController {
 		UserEntity userFoundById =  service.findById(user.getId());
 		List<UserEntity> userFoundByNameOrHobby =  service.findByNameOrHobby(userFoundById.getStudentName(), userFoundById.getStudentHobby());
 		List<UserEntity> userFoundByHobby = service.findByHobby(userFoundById.getStudentHobby());
-		service.delete(user);
-		userList.remove(user);
+		//service.delete(user);
+		//userList.remove(user);
 	
 		
 		
