@@ -6,23 +6,22 @@ import java.text.SimpleDateFormat;
 
 import javax.jms.JMSException;
 import javax.jms.Message;
+import javax.jms.MessageListener;
 import javax.jms.TextMessage;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.springframework.jms.annotation.JmsListener;
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.student.entity.UserEntity;
 import com.student.repository.UserRepository;  
 
 
-@Component
-public class RegistrationMessageReciever {
+public class RegistrationMessageReciever implements MessageListener {
 
+	@Autowired
 	private UserRepository userRepository;
 
-	@JmsListener(destination="TestQueue")
 	public void onMessage(Message message) {
 		if(message instanceof TextMessage){
 			try {
@@ -31,9 +30,10 @@ public class RegistrationMessageReciever {
 				UserEntity user = parseMessage(msgText);
 				getUserRepository().insert(user);
 			} catch (JMSException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
-			} 
+			}catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 

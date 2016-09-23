@@ -19,7 +19,7 @@ public class DBUtil {
 	}
 
 
-	public void initialize() throws ClassNotFoundException{
+	/*public void initialize() throws ClassNotFoundException{
 		DataSource dataSource = getDataSource();
 		try {
 			Class.forName("org.h2.Driver");
@@ -29,8 +29,21 @@ public class DBUtil {
 					+ "STUDENT_HOBBY VARCHAR(100), STUDENT_MOBILE_NUMBER VARCHAR(50), STUDENT_DOB DATE, STUDENT_SKILLSET VARCHAR(150))");
 			statement.close();
 			connection.close();
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
+	
+	public void destroy() {
+		DataSource dataSource = getDataSource();
+		try{
+			Connection connection = dataSource.getConnection();
+			Statement statement = connection.createStatement();
+			statement.executeUpdate("DROP TABLE USERS");
+			statement.close();
+			connection.close();
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+	}*/
 }

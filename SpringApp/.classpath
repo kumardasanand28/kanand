@@ -18,6 +18,5 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="D:/glassfish/4.1/glassfish4/glassfish/modules/javax.jms-api.jar"/>
-	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/javax.jms-api-2.0-sources.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

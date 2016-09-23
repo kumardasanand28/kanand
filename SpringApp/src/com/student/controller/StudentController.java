@@ -2,6 +2,8 @@ package com.student.controller;
 
 import java.util.List;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -12,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
 import com.student.bean.Student;
+import com.student.configuration.DIConfiguration;
 import com.student.entity.UserEntity;
 import com.student.repository.UserRepository;
 import com.student.service.RegistrationService;
@@ -37,11 +40,17 @@ public class StudentController {
 		
 		String json = new Gson().toJson(student);
 		
-		ClassPathXmlApplicationContext contextAno = new ClassPathXmlApplicationContext("/WEB-INF/sample-servlet.xml");
+		ApplicationContext contextAno = new AnnotationConfigApplicationContext(DIConfiguration.class);
 		RegistrationService reg = contextAno.getBean(RegistrationService.class);
 		
 		reg.sendMessageAsJSON(json);
 
+		 try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		ModelAndView mav = new ModelAndView("AdmissionSuccess");
 		UserRepository user = (UserRepository) contextAno.getBean(UserRepository.class);
 		List<UserEntity> userList = user.selectAll();
