@@ -1,0 +1,16 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: my-tomcat
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: tomcat-b
+    spec:
+      containers:
+      - name: tomcat-b
+        image: akd1234/userp:2.0
+        ports:
+        - containerPort: 8080
